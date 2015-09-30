@@ -63,10 +63,6 @@ function Cell(row, column, cell_type_name, data, data_type, fn){
 
 //Empty object - inherits from Cell
 
-//Empty.prototype = new Cell();
-//Empty.prototype.constructor = Empty;
-
-// extend from parent class prototype
 Empty.prototype = Object.create(Cell.prototype); // keeps the proto clean
 Empty.prototype.constructor = Empty; // repair the inherited constructor
 function Empty(row,column){
@@ -104,11 +100,13 @@ function Spreadsheet(){
   this.noOfRows = 0;
   this.noOfCols = 0;
   this.objCells = [];
+  this.crtSheet = null;
 
   //console.log("Spreadsheet constructor");
   this.InitFromSheet = function(){
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheets()[0];
+    this.crtSheet = sheet;
 
     this.noOfRows = sheet.getLastRow();
     this.noOfCols = sheet.getLastColumn();
@@ -135,7 +133,7 @@ function Spreadsheet(){
         else
           obj = new Data(i,j,val);
         
-        Logger.log('data (' + i + ',' + j + '): ' + obj.cell_type_name + "("+obj.cell_type + ")");
+        //Logger.log('data (' + i + ',' + j + '): ' + obj.cell_type_name + "("+obj.cell_type + ")");
         rowObj.push(obj); 
         
 
@@ -195,8 +193,10 @@ function Spreadsheet(){
           if (this.are_same( obj_val_buff,headers))
           {
             for(var cell=0; cell< headers_len; cell++)
-              //this.objCells[r][c+cell].setType("header");
+            {
               read_buffer[cell].setType("header");
+              SheetMarkCellAsHeader(this.crtSheet,read_buffer[cell]);
+            }
             return (r,c);
           } 
         }
@@ -272,7 +272,10 @@ function Spreadsheet(){
   
 }    
 
-
+function SheetMarkCellAsHeader(sheet,cell_obj){
+  var cell = sheet.getRange(cell_obj.row+1, cell_obj.column+1);
+  cell.setBackground("cyan");
+};
 /*      
 var test = new Cell(1,1,"boo",null,"int","test");
 //console.log(test.isEmpty());
