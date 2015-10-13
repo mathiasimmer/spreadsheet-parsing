@@ -35,12 +35,12 @@ class SpreadsheetGrammarLanguageGenerator implements IGenerator {
 		var grammar =  (tld as Grammar);
 		
 		//resource.allContents.filter(typeof(Grammar)).forEach[compile(fsa)]
-		
+		//var base = new BaseCodeGen(grammar);
 		var pyCode = new PyCodeGen(grammar);
 		var jSCode = new JSCodeGen(grammar);
 		
-		fsa.generateFile("generated/Parser_"+grammar.name+".py", genParserPyFile(pyCode));
-		fsa.generateFile("generated/Parser_"+grammar.name+".js", genParserJsFile(jSCode));
+		fsa.generateFile("generated/py/Parser_"+grammar.name+".py", genParserPyFile(pyCode));
+		fsa.generateFile("generated/js/Parser_"+grammar.name+".js", genParserJsFile(jSCode));
 	}
 	
 	def genParserJsFile(JSCodeGen code) {

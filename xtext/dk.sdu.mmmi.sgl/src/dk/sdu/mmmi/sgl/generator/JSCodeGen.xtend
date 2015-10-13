@@ -2,12 +2,12 @@ package dk.sdu.mmmi.sgl.generator
 
 import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Grammar
 
-class JSCodeGen {
+class JSCodeGen extends BaseCodeGen {
 	protected var Grammar grammar;
 	
 	new(Grammar gra)
 	{
-		grammar = gra;
+		super(gra);
 	}
 	
 	def generate(/*Grammar grammar*/) 

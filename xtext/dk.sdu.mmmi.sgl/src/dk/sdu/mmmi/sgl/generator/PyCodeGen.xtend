@@ -6,22 +6,15 @@ import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.MandatoryColumn
 import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.OptionalColumn
 import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.RowSpec
 import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.BlockSpec
-import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Syntax
-import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Rule
 import org.eclipse.emf.common.util.EList
-import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.SyntaxSeq
-import java.util.HashMap
-import java.util.List
-import java.util.ArrayList
-import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Column
-import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.ColumnDefinition
+import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Rule
+import dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Syntax
 
-class PyCodeGen {
-	protected var Grammar grammar;
+class PyCodeGen extends BaseCodeGen {
 	
 	new(Grammar gra)
 	{
-		grammar = gra;
+		super(gra);
 	}
 	
 	def generate(/*Grammar grammar*/) '''
@@ -48,6 +41,43 @@ class PyCodeGen {
 		«FOR e:grammar.elements»
 		«e.genParser»
 		«ENDFOR»
+	'''
+		def dispatch genParser(Rule rule) '''
+	
+	def parse_syntax_«rule.name»(self,text):
+		object_and_rest = self.internal_parse_syntax_«rule.name»(text)
+		if object_and_rest==None:
+			raise Exception("Failed parsing as «rule.name», text: "+text)
+		rest_maybe = object_and_rest[1].lstrip()
+		if len(rest_maybe)>0:
+			raise Exception("Surplus text when parsing «rule.name», text: "+rest_maybe)
+		return object_and_rest[0]
+	
+	def internal_parse_syntax_«rule.name»(self,text):
+		«FOR a:rule.alternatives»
+		object_and_rest = self.parse_syntax_«rule.name»_«a.uniqueCode»(text)
+		if object_and_rest!=None:
+			return object_and_rest
+		«ENDFOR»
+		return None
+	«FOR a:rule.alternatives»
+	«a.parts.genInternalParser(rule.name+"_"+a.uniqueCode,rule.name)»	
+	«ENDFOR»
+	'''
+	
+	def genInternalParser(EList<Syntax> list, String name, String dataname) '''
+	
+	def parse_syntax_«name»(self,text):
+		current = text
+		result = []
+		«FOR part:list»
+		object_and_rest = self.internal_parse_syntax_«part.generateSyntaxName»(current)
+		if object_and_rest==None:
+			return None
+		result.append(object_and_rest[0])
+		current = object_and_rest[1]
+		«ENDFOR»
+		return ({"«dataname»":result},current)
 	'''
 	
 	//
@@ -128,97 +158,5 @@ class PyCodeGen {
 	result_row_increment = max(result_row_increment,relativeRow)
 	'''
 
-	// Helper stuff
-	
-	def String generateSyntaxName(Syntax syntax) {
-		if(syntax.is_id) "IDENTIFIER"
-		else if(syntax.is_string) "STRING"
-		else if(syntax.is_int) "INTEGER"
-		else if(syntax.token!=null) "token(\""+syntax.token+"\")"
-		else syntax.rule.name
-	}
-	
-	//
-	// Parse functions for rules
-	//
-	
-	def dispatch genParser(Rule rule) '''
-	
-	def parse_syntax_«rule.name»(self,text):
-		object_and_rest = self.internal_parse_syntax_«rule.name»(text)
-		if object_and_rest==None:
-			raise Exception("Failed parsing as «rule.name», text: "+text)
-		rest_maybe = object_and_rest[1].lstrip()
-		if len(rest_maybe)>0:
-			raise Exception("Surplus text when parsing «rule.name», text: "+rest_maybe)
-		return object_and_rest[0]
-	
-	def internal_parse_syntax_«rule.name»(self,text):
-		«FOR a:rule.alternatives»
-		object_and_rest = self.parse_syntax_«rule.name»_«a.uniqueCode»(text)
-		if object_and_rest!=None:
-			return object_and_rest
-		«ENDFOR»
-		return None
-	«FOR a:rule.alternatives»
-	«a.parts.genInternalParser(rule.name+"_"+a.uniqueCode,rule.name)»	
-	«ENDFOR»
-	'''
-	
-	def genInternalParser(EList<Syntax> list, String name, String dataname) '''
-	
-	def parse_syntax_«name»(self,text):
-		current = text
-		result = []
-		«FOR part:list»
-		object_and_rest = self.internal_parse_syntax_«part.generateSyntaxName»(current)
-		if object_and_rest==None:
-			return None
-		result.append(object_and_rest[0])
-		current = object_and_rest[1]
-		«ENDFOR»
-		return ({"«dataname»":result},current)
-	'''
 
-	def String uniqueCode(SyntaxSeq seq) {
-		if(!uniqueCodes.containsKey(seq))
-			uniqueCodes.put(seq,Integer.toString(uniqueCodesCounter++))
-		uniqueCodes.get(seq)
-	}
-
-	val uniqueCodes = new HashMap<SyntaxSeq,String>
-	var uniqueCodesCounter = 0
-	
-	//
-	// Computation of headers
-	//
-	
-	def List<String> computeHeaders(Grammar grammar) {
-		val result = new ArrayList<String>()
-		grammar.root.collectHeaders(result)
-		result
-	}
-	
-	def dispatch void collectHeaders(Block block, List<String> collector) {
-		block.columns.forEach[collectHeaders(collector)]
-	}
-	
-	def dispatch void collectHeaders(Rule rule, List<String> collector) { }
-	
-	def dispatch void collectHeaders(Column column, List<String> collector) {
-		column.def.collectHeaders(collector)
-	}
-	
-	def dispatch void collectHeaders(ColumnDefinition cdef, List<String> collector) {
-		cdef.spec.collectHeaders(collector)
-	}
-
-	def dispatch void collectHeaders(RowSpec spec, List<String> collector) {
-		collector.add(spec.header)
-	}
-
-	def dispatch void collectHeaders(BlockSpec spec, List<String> collector) {
-		spec.kind.collectHeaders(collector)
-	}
-	
 }
