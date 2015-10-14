@@ -47,8 +47,7 @@ class SpreadsheetGrammarLanguageGenerator implements IGenerator {
 		code.generate;
 	}
 	
-	def genParserPyFile(PyCodeGen code) { 
-		
+	def genParserPyFile(PyCodeGen code) { 		
 		code.generate;
 	}
 }
