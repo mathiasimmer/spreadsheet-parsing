@@ -42,7 +42,7 @@ class PyCodeGen extends BaseCodeGen {
 		«e.genParser»
 		«ENDFOR»
 	'''
-		def dispatch genParser(Rule rule) '''
+	def dispatch genParser(Rule rule) '''
 	
 	def parse_syntax_«rule.name»(self,text):
 		object_and_rest = self.internal_parse_syntax_«rule.name»(text)
