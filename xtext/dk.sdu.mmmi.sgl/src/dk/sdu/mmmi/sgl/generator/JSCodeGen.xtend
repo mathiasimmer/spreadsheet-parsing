@@ -26,52 +26,52 @@ class JSCodeGen extends BaseCodeGen {
 
 	Parse«grammar.name».prototype = Object.create(GenericParserHelper.prototype); // keeps the proto clean
 	Parse«grammar.name».prototype.constructor = Parse«grammar.name»;              // repair the inherited constructor
-	function Parse«grammar.name»(row,column){
+	function Parse«grammar.name»(spreadsheet){
 	    GenericParserHelper.call(this,spreadsheet);
 		//console.log("Empty constructor");
 	
-		function matchColumns(columnHeaders){
+		this.matchColumns = function(columnHeaders){
 			return are_same(columnHeaders,[«FOR h:grammar.computeHeaders SEPARATOR ","»"«h»"«ENDFOR»]);
-		}
+		};
 	
 
-	function getColumnHeaders(){
-		return [«FOR h:grammar.computeHeaders SEPARATOR ","»"«h»"«ENDFOR»];
-		}
-	
-	function parseBlock(columnHeaders,row,column,height){
-		var results = [];
-		var relativeRow = 0;
-		while (relativeRow<height){
-			var increment_and_object = this.parse_«grammar.root.name»(row+relativeRow,column,row+height);
-			results.push(increment_and_object[1]);
-			relativeRow += increment_and_object[0];
-			}
-		return results;
-		}
-	«FOR e:grammar.elements»
-	«e.genParser»
-	«ENDFOR»
-	
-	//helper function
-	
-	this.are_same = function(array1, array2){
-		if (array1.length !== array2.length) 
-			return false;
-		for (var i = 0; i < array1.length; i++){
-			if (array1[i] !== array2[i])
-	    		return false;
-	    		
-			}
-		return true; 
+		this.getColumnHeaders = function(){
+			return [«FOR h:grammar.computeHeaders SEPARATOR ","»"«h»"«ENDFOR»];
 		};
 		
+		this.parseBlock = function(columnHeaders,row,column,height){
+			var results = [];
+			var relativeRow = 0;
+			while (relativeRow<height){
+				var increment_and_object = this.parse_«grammar.root.name»(row+relativeRow,column,row+height);
+				results.push(increment_and_object[1]);
+				relativeRow += increment_and_object[0];
+				}
+			return results;
+		};
+		«FOR e:grammar.elements»
+		«e.genParser»
+		«ENDFOR»
+	
+		//helper function
+		
+		this.are_same = function(array1, array2){
+			if (array1.length !== array2.length) 
+				return false;
+			for (var i = 0; i < array1.length; i++){
+				if (array1[i] !== array2[i])
+		    		return false;
+		    		
+				}
+			return true; 
+		};
+			
 	}
 
 	''' 
 	def dispatch genParser(Rule rule) '''
 	
-	function parse_syntax_«rule.name»(text){
+	this.parse_syntax_«rule.name» = function(text){
 		var object_and_rest = this.internal_parse_syntax_«rule.name»(text);
 		if (object_and_rest===null)
 			console.log("Failed parsing as «rule.name», text: ",text);
@@ -79,9 +79,9 @@ class JSCodeGen extends BaseCodeGen {
 		if (rest_maybe.length>0)
 			console.log("Surplus text when parsing «rule.name», text: ",rest_maybe);
 		return object_and_rest[0];
-		}
+	};
 	
-	function internal_parse_syntax_«rule.name»(text){
+	this.internal_parse_syntax_«rule.name» = function(text){
 		var object_and_rest = null;
 		«FOR a:rule.alternatives»
 		object_and_rest = this.parse_syntax_«rule.name»_«a.uniqueCode»(text);
@@ -89,7 +89,7 @@ class JSCodeGen extends BaseCodeGen {
 			return object_and_rest;
 		«ENDFOR»
 		return null;
-		}
+	};
 	«FOR a:rule.alternatives»
 	«a.parts.genInternalParser(rule.name+"_"+a.uniqueCode,rule.name)»	
 	«ENDFOR»
@@ -97,7 +97,7 @@ class JSCodeGen extends BaseCodeGen {
 	
 	def genInternalParser(EList<Syntax> list, String name, String dataname) '''
 	
-	function parse_syntax_«name»(text){
+	this.parse_syntax_«name» = function(text){
 		var current = text;
 		var result = [];
 		var object_and_rest = null;
@@ -109,7 +109,7 @@ class JSCodeGen extends BaseCodeGen {
 		current = object_and_rest[1];
 		«ENDFOR»
 		return ({"«dataname»":result},current);
-	}
+	};
 	'''
 	
 	//
@@ -118,7 +118,7 @@ class JSCodeGen extends BaseCodeGen {
 	
 	def dispatch genParser(Block block) '''
 	
-	function parse_«block.name»(row,column,max_row){
+	this.parse_«block.name» = function(row,column,max_row){
 		var column_offset = 0;
 		var result_row_increment = 1;
 		var result_object = {};
@@ -135,7 +135,7 @@ class JSCodeGen extends BaseCodeGen {
 		column_offset ++;
 		«ENDFOR»
 		return (result_row_increment,result_object);
-		}
+	};
 	'''
 	
 	def dispatch genParserMultiple(MandatoryColumn col, String name) '''
@@ -147,7 +147,7 @@ class JSCodeGen extends BaseCodeGen {
 	var value_«name» = [];
 	if (!this.emptyCell(row,current_column)){
 		«col.spec.genParserMultipleBody(name)»
-		}
+	}
 	'''
 
 	def dispatch genParserSingle(MandatoryColumn col, String name) '''
