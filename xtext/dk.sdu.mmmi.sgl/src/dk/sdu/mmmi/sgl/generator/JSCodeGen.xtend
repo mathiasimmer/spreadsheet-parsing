@@ -28,7 +28,7 @@ class JSCodeGen extends BaseCodeGen {
 	Parse«grammar.name».prototype.constructor = Parse«grammar.name»;              // repair the inherited constructor
 	function Parse«grammar.name»(spreadsheet){
 	    GenericParserHelper.call(this,spreadsheet);
-		//console.log("Empty constructor");
+		//Logger.log("Empty constructor");
 	
 		this.matchColumns = function(columnHeaders){
 			return are_same(columnHeaders,[«FOR h:grammar.computeHeaders SEPARATOR ","»"«h»"«ENDFOR»]);
@@ -43,7 +43,7 @@ class JSCodeGen extends BaseCodeGen {
 			var results = [];
 			var relativeRow = 0;
 			while (relativeRow<height){
-				var increment_and_object = this.parse_«grammar.root.name»(row+relativeRow,column,row+height);
+				var increment_and_object = this.parse_«grammar.root.name»(toInternal(row)+relativeRow,toInternal(column),toInternal(row)+height);
 				results.push(increment_and_object[1]);
 				relativeRow += increment_and_object[0];
 				}
@@ -73,11 +73,15 @@ class JSCodeGen extends BaseCodeGen {
 	
 	this.parse_syntax_«rule.name» = function(text){
 		var object_and_rest = this.internal_parse_syntax_«rule.name»(text);
-		if (object_and_rest===null)
-			console.log("Failed parsing as «rule.name», text: ",text);
-		rest_maybe = object_and_rest[1].replace(/^\s*/g, ""); //lstrip()
-		if (rest_maybe.length>0)
-			console.log("Surplus text when parsing «rule.name», text: ",rest_maybe);
+		if (object_and_rest===null){
+			Logger.log("Failed parsing as «rule.name», text: " + text);
+			return null;
+		}
+		if(typeof object_and_rest[1] != 'undefined'){
+			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
+			if (rest_maybe.length>0)
+				Logger.log("Surplus text when parsing «rule.name», text: " + rest_maybe);
+		}
 		return object_and_rest[0];
 	};
 	
@@ -95,20 +99,31 @@ class JSCodeGen extends BaseCodeGen {
 	«ENDFOR»
 	'''
 	
-	def genInternalParser(EList<Syntax> list, String name, String dataname) '''
+	def genInternalParser(EList<Syntax> list, String name, String dataname) 
 	
+	'''
+	
+		
 	this.parse_syntax_«name» = function(text){
 		var current = text;
 		var result = [];
 		var object_and_rest = null;
 		«FOR part:list»
-		object_and_rest = this.internal_parse_syntax_«part.generateSyntaxName»(current);
+		«var fn_text = part.generateSyntaxName»
+		«IF fn_text.startsWith("token(")»
+		//«fn_text = fn_text.replace(")","")»
+		//«fn_text += ", current)"»
+		«ELSE»
+		//«fn_text += "(current)"»
+		«ENDIF»
+		
+		object_and_rest = this.internal_parse_syntax_«fn_text»;
 		if (object_and_rest===null)
 			return null;
 		result.push(object_and_rest[0]);
 		current = object_and_rest[1];
 		«ENDFOR»
-		return ({"«dataname»":result},current);
+		return [{"«dataname»":result},current];
 	};
 	'''
 	
@@ -134,7 +149,7 @@ class JSCodeGen extends BaseCodeGen {
 		result_object.«c.name» = value_«c.name»;
 		column_offset ++;
 		«ENDFOR»
-		return (result_row_increment,result_object);
+		return [result_row_increment,result_object];
 	};
 	'''
 	
