@@ -6,6 +6,24 @@
 //
 ///////////////////////////
 
+// Size object
+
+function Size(){
+  this.row = null;
+  this.col = null;
+  this.len = null;
+  this.width = null;
+  this.depth = null;
+  
+  this.isValid = function(){ 
+    if(this.row != null || this.col != null || this.len != null || this.width != null || this.depth != null)
+      return true;
+    else
+      return false;
+  }
+};
+
+
 // Cell object
 
 function Cell(row, column, cell_type_name, data, data_type, fn){
@@ -101,7 +119,13 @@ function Spreadsheet(){
   this.noOfCols = 0;
   this.objCells = [];
   this.crtSheet = null;
-
+  this.headSize = new Size();
+  this.maxBlock = new Size();
+  /*
+  this.headRow = null;
+  this.headCol = null;
+  this.headLen = null;
+  */
   //console.log("Spreadsheet constructor");
   this.InitFromSheet = function(){
     var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -195,31 +219,41 @@ function Spreadsheet(){
             for(var cell=0; cell< headers_len; cell++)
             {
               read_buffer[cell].setType("header");
-              SheetMarkCellAsHeader(this.crtSheet,read_buffer[cell]);
+              //SheetMarkCellAsHeader(this.crtSheet,read_buffer[cell]);
             }
-            return (r,c);
+            
+            this.headSize.row = r;
+            this.headSize.col = c;
+            this.headSize.width = headers_len;
+            //this.headSize.setValid();
+                        
+            return {r:r,c:c};
           } 
         }
       }
     }
-    return (-1,-1);
+    return {r:-1,c:-1};
   };
   
   this.are_same = function(array1, array2){
     if (array1.length !== array2.length) 
       return false;
     for (var i = 0; i < array1.length; i++){
+      //Logger.log( "comp( len " + array1.length + "): '" + array1[i] + "' with '" + array2[i])+"'";
         if (array1[i] !== array2[i]){
             return false;
         }
     }
     return true; 
-}
+  };
   
   this.FindBlockAndDepth = function(headers){
-    hr,hc = self.__FindHeaders(headers);
-    //console.log( "row", hr, "col",hc);
-    headers_len = len(headers);
+    var res = this.__FindHeaders(headers);
+    var hr = res.r;
+    var hc = res.c;
+    
+    Logger.log("header: row "+ toSheet(hr)+ ", col " + toSheet(hc));
+    headers_len = headers.length;
     max_depth = -1;
     if(hr != -1 && hc != -1)
     {
@@ -231,14 +265,35 @@ function Spreadsheet(){
           max_depth = depth
       }
     }
-    return hr,hc,max_depth
+    
+    this.maxBlock.row = hr;
+    this.maxBlock.col = hc;
+    this.maxBlock.width = headers_len;
+    this.maxBlock.depth = max_depth;
+    return {r:hr,c:hc,depth:max_depth,width:headers_len};
   };
-  
+    
   this.getColDepth = function(row, col){
     var i = 0;
-    while ((i < self.noOfRows - row) && (this.objCells[row+i][col].isEmpty() === false))
-    i++ ;
+    while((i < this.noOfRows - row) && (this.objCells[row+i][col].isEmpty() === false))
+    {
+      i++ ;
+      //Logger.log("getColDepth next: row:" + (row+i) + "(" + this.noOfRows + "), col: " + col + "("+this.noOfCols+")");
+    }
     return i;
+  };
+  
+  this.getHeaderPos = function(){
+   /*
+    return {r:this.headRow,
+            c:this.headCol,
+            len:this.headLen};
+            */
+    return this.headSize;
+  };
+
+  this.getMaxBlockPosAndSize = function(){
+    return this.maxBlock;
   };
   
   this.Print = function(){
@@ -269,13 +324,43 @@ function Spreadsheet(){
     }
     Logger.log(print);
   }
+
+  this.validRow = function(row){
+    var ret = true;
+    
+    if (!(row <= this.noOfRows))
+    {
+      ret = true;
+    
+      Logger.log("row: " + row + " outside max row (" + this.noOfRows + ")");
+    }
+    return ret;
+  };
+  
+  this.validCol = function(col){
+    var ret = true;
+    
+    if (!(col <= this.noOfCols))
+    {
+      ret = true;
+    
+      Logger.log("col: " + col + " outside max col (" + this.noOfCols + ")");
+    }
+    
+    return ret;
+  };
   
 }    
 
-function SheetMarkCellAsHeader(sheet,cell_obj){
-  var cell = sheet.getRange(cell_obj.row+1, cell_obj.column+1);
-  cell.setBackground("cyan");
+
+function toSheet(val){
+  return val + 1;
 };
+
+function toInternal(val){
+  return val - 1;
+};
+
 /*      
 var test = new Cell(1,1,"boo",null,"int","test");
 //console.log(test.isEmpty());
