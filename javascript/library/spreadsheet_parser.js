@@ -16,10 +16,14 @@ function GenericParserHelper(spreadsheet){
     if(!this.spreadsheet.validRow(row) && !this.spreadsheet.validCol(column))
        return null;
     
-    var value = this.spreadsheet.objCells[row][column].data;
+    var value = this.spreadsheet.objCells[row][column];//.data;
     if (value === null)
       Logger.log("Null value not expected when reading cell: r " + row + ", c " + column);
     return value;
+  };
+
+  this.getCellError = function(r,c){
+    return this.spreadsheet.objCells[r][c].err;
   };
 
   this.emptyCell = function(row,column){
@@ -29,29 +33,31 @@ function GenericParserHelper(spreadsheet){
     return this.spreadsheet.objCells[row][column].isEmpty();
   };
 
-  this.parse_syntax_IDENTIFIER = function(text){
+  this.parse_syntax_IDENTIFIER = function(cell){
 
-    var result = this.internal_parse_syntax_IDENTIFIER(text);
+    var result = this.internal_parse_syntax_IDENTIFIER(cell.data);
     if (result!==null && result[1].lenght===0)
             return result[0];
-    Logger.log('parse error: illegal identifier ' + text);
+    Logger.log('parse error: illegal identifier ' + cell.data);
   };
   
-  this.parse_syntax_STRING = function(text){
+  this.parse_syntax_STRING = function(cell){
     
-    return this.internal_parse_syntax_STRING(text)[0];
+    return this.internal_parse_syntax_STRING(cell.data)[0];
   };
 
-  this.parse_syntax_INTEGER = function(text){
-    var result = this.internal_parse_syntax_INTEGER(text)[0];
+  this.parse_syntax_INTEGER = function(cell){
+    var result = this.internal_parse_syntax_INTEGER(cell.data)[0];
     if(result!==null)
         return result[0];
-    Logger.log('parse error: illegal integer ' + text);
+    var error = 'parse error: illegal integer ' + cell.data;
+    Logger.log(error);
+    cell.setError(error);
   };
 /*
   this.parse_syntax_token = function(token){
 
-    var f=function(text) { this.parse_syntax_token_helper(token,text); };
+    var f=function(text) { this.parse_syntax_token_helper(text); };
     return f;
   };
 */
@@ -60,7 +66,9 @@ function GenericParserHelper(spreadsheet){
     var result = this.internal_parse_syntax_token(token);
     if (result!==null)
       return result[0];
-    Logger.log('parse error: expected token ' + token + ' but got ' + string);
+    var error = 'parse error: expected token ' + token + ' but got ' + string;
+    Logger.log(error);
+    cell.setError(error);
   };
 
   this.internal_parse_syntax_IDENTIFIER = function(text){
@@ -89,7 +97,7 @@ function GenericParserHelper(spreadsheet){
   };
 /*
   this.internal_parse_syntax_token = function(token){
-    var f = function(text){ this.internal_parse_syntax_token_helper(token,text); };
+    var f = function(cell.data){ this.internal_parse_syntax_token_helper(token,cell.data); };
     return f;
   };
 */
@@ -103,6 +111,18 @@ function GenericParserHelper(spreadsheet){
     return null;
   };
 
+  this.validRow = function(val){
+    return this.spreadsheet.validRow(val);
+  };
+  
+  this.validCol = function(val){
+    return this.spreadsheet.validCol(val);
+  };
+  
+  this.validHeight = function(val){
+    return this.spreadsheet.validHeight(val);
+  };
+  
 }
 
 if (!String.prototype.startsWith) {

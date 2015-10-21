@@ -39,15 +39,20 @@ class JSCodeGen extends BaseCodeGen {
 			return [«FOR h:grammar.computeHeaders SEPARATOR ","»"«h»"«ENDFOR»];
 		};
 		
-		this.parseBlock = function(columnHeaders,row,column,height){
+		this.parseBlock = function(row,column,height){
 			var results = [];
 			var relativeRow = 0;
-			while (relativeRow<height){
-				var increment_and_object = this.parse_«grammar.root.name»(toInternal(row)+relativeRow,toInternal(column),toInternal(row)+height);
-				results.push(increment_and_object[1]);
-				relativeRow += increment_and_object[0];
+			if(this.validRow(row) && this.validCol(column) && this.validHeight(height))
+			{
+				while (relativeRow<height){
+					var increment_and_object = this.parse_«grammar.root.name»(row+relativeRow, column, row+height-1);
+					results.push(increment_and_object[1]);
+					relativeRow += increment_and_object[0];
 				}
-			return results;
+				return results;
+			}
+			else
+				return null;
 		};
 		«FOR e:grammar.elements»
 		«e.genParser»
@@ -71,16 +76,23 @@ class JSCodeGen extends BaseCodeGen {
 	''' 
 	def dispatch genParser(Rule rule) '''
 	
-	this.parse_syntax_«rule.name» = function(text){
-		var object_and_rest = this.internal_parse_syntax_«rule.name»(text);
+	this.parse_syntax_«rule.name» = function(cell){
+		var object_and_rest = this.internal_parse_syntax_«rule.name»(cell.data);
+		var error = null;
 		if (object_and_rest===null){
-			Logger.log("Failed parsing as «rule.name», text: " + text);
+			error = "Failed parsing as «rule.name», text: " + cell.data;
+			Logger.log(error);
+			cell.setError(error);
 			return null;
 		}
 		if(typeof object_and_rest[1] != 'undefined'){
 			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
 			if (rest_maybe.length>0)
-				Logger.log("Surplus text when parsing «rule.name», text: " + rest_maybe);
+			{
+				error = "Surplus text when parsing «rule.name», text: " + rest_maybe;
+				Logger.log(error);
+				cell.setError(error);
+			}
 		}
 		return object_and_rest[0];
 	};
@@ -100,32 +112,41 @@ class JSCodeGen extends BaseCodeGen {
 	'''
 	
 	def genInternalParser(EList<Syntax> list, String name, String dataname) 
-	
-	'''
-	
+	{
+		var code_gen=
+		'''
 		
-	this.parse_syntax_«name» = function(text){
-		var current = text;
-		var result = [];
-		var object_and_rest = null;
-		«FOR part:list»
-		«var fn_text = part.generateSyntaxName»
-		«IF fn_text.startsWith("token(")»
-		//«fn_text = fn_text.replace(")","")»
-		//«fn_text += ", current)"»
-		«ELSE»
-		//«fn_text += "(current)"»
-		«ENDIF»
+			
+		this.parse_syntax_«name» = function(text){
+			var current = text;
+			var result = [];
+			var object_and_rest = null;'''
+		for (part:list)
+		{
+			var fn_text = part.generateSyntaxName
+			if( fn_text.startsWith("token("))
+			{
+				fn_text = fn_text.replace(")","")
+				fn_text += ", current)"
+			}
+			else
+				fn_text += "(current)"
 		
-		object_and_rest = this.internal_parse_syntax_«fn_text»;
-		if (object_and_rest===null)
-			return null;
-		result.push(object_and_rest[0]);
-		current = object_and_rest[1];
-		«ENDFOR»
-		return [{"«dataname»":result},current];
-	};
-	'''
+		
+		code_gen += 
+		'''	
+			object_and_rest = this.internal_parse_syntax_«fn_text»;
+			if (object_and_rest===null)
+				return null;
+			result.push(object_and_rest[0]);
+			current = object_and_rest[1];'''
+		}
+		code_gen +=
+		'''	return [{"«dataname»":result},current];
+		};'''
+		
+		return code_gen;
+	}
 	
 	//
 	// Parse functions for grammar
@@ -183,6 +204,7 @@ class JSCodeGen extends BaseCodeGen {
 	
 	def dispatch genParserSingleBody(BlockSpec spec) {
 		throw new Exception("Illegal grammar: block with single-relation column")
+		//Logger.log("Illegal grammar: block with single-relation column");
 	}
 
 	def dispatch genParserMultipleBody(RowSpec spec, String name) '''

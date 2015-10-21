@@ -23,6 +23,12 @@ function Size(){
   }
 };
 
+// Error object
+
+function Error(){
+  this.hasErr = false;
+  this.text = null;
+};
 
 // Cell object
 
@@ -34,6 +40,9 @@ function Cell(row, column, cell_type_name, data, data_type, fn){
   this.data_type = data_type;
   this.fn = fn;    
   this.cell_type = 9; //unknown type
+  this.err = new Error();
+  //this.comment = null;
+  //this.color = null;
   
   this.setType = function(type_name){ 
     if(type_name === "empty")
@@ -55,7 +64,11 @@ function Cell(row, column, cell_type_name, data, data_type, fn){
       return cell_type_name;
   };
 
-  
+  this.setError = function(text){
+    this.err.text = text;
+    this.err.hasErr = true;
+  };
+
   
   this.isEmpty = function(){
     if (this.cell_type === "empty")
@@ -296,6 +309,10 @@ function Spreadsheet(){
     return this.maxBlock;
   };
   
+  this.getCellErr = function(r,c){
+    return this.objCells[r][c].err;
+  };
+  
   this.Print = function(){
     //Logger.log("Print Sheet obj: rows:" + this.noOfRows + " cols: " + this.noOfCols);
     var print = "Print Sheet obj: rows:" + this.noOfRows + " cols: " + this.noOfCols + "\n";
@@ -317,7 +334,7 @@ function Spreadsheet(){
             print += "X ";
             break;
           default:
-            print += "? ";
+            print += " ? ";
         }
       }
       print += "\n"
@@ -330,7 +347,7 @@ function Spreadsheet(){
     
     if (!(row <= this.noOfRows))
     {
-      ret = true;
+      ret = false;
     
       Logger.log("row: " + row + " outside max row (" + this.noOfRows + ")");
     }
@@ -342,9 +359,22 @@ function Spreadsheet(){
     
     if (!(col <= this.noOfCols))
     {
-      ret = true;
+      ret = false;
     
       Logger.log("col: " + col + " outside max col (" + this.noOfCols + ")");
+    }
+    
+    return ret;
+  };
+  
+  this.validHeight = function(height){
+    var ret = true;
+    
+    if (!(height <= this.noOfRows))
+    {
+      ret = false;
+    
+      Logger.log("height: " + height + " outside max height (" + this.noOfRows + ")");
     }
     
     return ret;
@@ -360,20 +390,3 @@ function toSheet(val){
 function toInternal(val){
   return val - 1;
 };
-
-/*      
-var test = new Cell(1,1,"boo",null,"int","test");
-//console.log(test.isEmpty());
-//console.log("ceating empty");
-var empty = new Empty(10,20);
-
-
-
-/*console.log(test.data);
-console.log(test.isData());
-console.log(empty.isEmpty());*/
-//console.log(empty.row);
-/*
-Logger.log('test.data:' + test.data);
-Logger.log('empty.isEmpty():' + empty.isEmpty());
-*/
