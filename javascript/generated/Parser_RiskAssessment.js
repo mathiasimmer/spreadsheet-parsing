@@ -19,10 +19,10 @@ function ParseRiskAssessment(spreadsheet){
 	this.parseBlock = function(row,column,height){
 		var results = [];
 		var relativeRow = 0;
-		if(this.validRow(row) && this.validCol(column) && this.validHeight(height))
+		if(this.validRow(row) && this.validCol(column) && this.validRow(row + height-1))
 		{
 			while (relativeRow<height){
-				var increment_and_object = this.parse_RiskAssessment(row+relativeRow, column, row+height-1);
+				var increment_and_object = this.parse_RiskAssessment(row+relativeRow, column, row+height);
 				results.push(increment_and_object[1]);
 				relativeRow += increment_and_object[0];
 			}
@@ -53,7 +53,7 @@ function ParseRiskAssessment(spreadsheet){
 			var increment_and_object = this.parse_Risks(row+relativeRow,current_column,max_row);
 			relativeRow += increment_and_object[0];
 			value_risks.push(increment_and_object[1]);
-			if (!this.emptyCell(row+relativeRow,current_column-1))
+			if (!this.validRow(row+relativeRow) || !this.emptyCell(row+relativeRow,current_column-1))
 				break;
 		}
 		result_row_increment = Math.max(result_row_increment,relativeRow);

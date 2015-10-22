@@ -16,7 +16,7 @@ function onEdit(e){
 
 //called on selecting 'Validate worksheet' menu
 function menuValidateWorksheet() {
-  Logger.log("menu: menuValidateWorkseet");  //debugging info available in View->Logs (shortcut Ctrl+Enter)
+  //Logger.log("menu: menuValidateWorkseet");  //debugging info available in View->Logs (shortcut Ctrl+Enter)
 
   s.InitFromSheet();
   
@@ -75,6 +75,8 @@ function SheetMarkErrorCells(sheet,size){
   var c = toSheet(size.col);
   var depth = size.depth;
   var width = size.width;
+  var cell = null;
+  var err = null;
   if(r > 0 && r < sheet.getLastRow() && c > 0 && c < sheet.getLastColumn() && 
     depth > 0 && r + depth -1 <= sheet.getLastRow() && width > 0 && c + width -1<= sheet.getLastColumn())
     {
@@ -83,17 +85,24 @@ function SheetMarkErrorCells(sheet,size){
       {
         for(var col = c; col < c + width; col ++)
         {
-          cell = sheet.getRange(row, col);
-          var err = s.getCellErr(toInternal(row),toInternal(col));
+          err = s.getCellErr(toInternal(row),toInternal(col));
+          //Logger.log("debug: r " + toInternal(row) + " , c " + toInternal(col) + " err: " + err.hasErr);
           if(err.hasErr === true)
           {
+            cell = sheet.getRange(row, col);
             cell.setNote(err.text);
             cell.setBackground("red");
             parsingErrors ++;
           }
         }
-        if(parsingErrors > 0)
-          SpreadsheetApp.getActiveSpreadsheet().toast('Please see the notes of the red-marked cells', 'Parsing error(s)', 5);
+      }
+      if(parsingErrors > 0)
+      {
+        var text = parsingErrors + " parsing error";
+        if(parsingErrors > 1)
+          text += "s";
+        text += "!";
+        SpreadsheetApp.getActiveSpreadsheet().toast('Please see the notes of the red-marked cells', text, 5);      
       }
     }
 }

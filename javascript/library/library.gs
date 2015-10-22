@@ -147,7 +147,7 @@ function Spreadsheet(){
 
     this.noOfRows = sheet.getLastRow();
     this.noOfCols = sheet.getLastColumn();
-    var range = sheet.getRange(1,1,this.noOfRows, this.noOfCols);
+    var range = sheet.getRange(1,1,this.noOfRows,this.noOfCols);
     var values = range.getValues();
 
     var i=0;
@@ -345,11 +345,11 @@ function Spreadsheet(){
   this.validRow = function(row){
     var ret = true;
     
-    if (!(row <= this.noOfRows))
+    if (!(row < this.noOfRows))
     {
       ret = false;
     
-      Logger.log("row: " + row + " outside max row (" + this.noOfRows + ")");
+      Logger.log("row: " + row + " outside max row (" + (this.noOfRows - 1) + ")");
     }
     return ret;
   };
@@ -357,29 +357,16 @@ function Spreadsheet(){
   this.validCol = function(col){
     var ret = true;
     
-    if (!(col <= this.noOfCols))
+    if (!(col < this.noOfCols))
     {
       ret = false;
     
-      Logger.log("col: " + col + " outside max col (" + this.noOfCols + ")");
+      Logger.log("col: " + col + " outside max col (" + (this.noOfCols - 1) + ")");
     }
     
     return ret;
   };
-  
-  this.validHeight = function(height){
-    var ret = true;
     
-    if (!(height <= this.noOfRows))
-    {
-      ret = false;
-    
-      Logger.log("height: " + height + " outside max height (" + this.noOfRows + ")");
-    }
-    
-    return ret;
-  };
-  
 }    
 
 

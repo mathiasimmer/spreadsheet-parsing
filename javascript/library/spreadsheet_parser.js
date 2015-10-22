@@ -13,8 +13,10 @@ function GenericParserHelper(spreadsheet){
   this.spreadsheet = spreadsheet;
     
   this.getCell = function(row,column){ 
-    if(!this.spreadsheet.validRow(row) && !this.spreadsheet.validCol(column))
-       return null;
+    if(!this.spreadsheet.validRow(row) || !this.spreadsheet.validCol(column)){
+      Logger.log("Error getCell: cell: r " + row + ", c " + column);
+      return null;
+    }
     
     var value = this.spreadsheet.objCells[row][column];//.data;
     if (value === null)
@@ -27,10 +29,14 @@ function GenericParserHelper(spreadsheet){
   };
 
   this.emptyCell = function(row,column){
-    if(!this.spreadsheet.validRow(row) && !this.spreadsheet.validCol(column))
-      return null;
-    //Logger.log("Debug: cell: r " + row + ", c " + column);
-    return this.spreadsheet.objCells[row][column].isEmpty();
+    if(this.spreadsheet.validRow(row) && this.spreadsheet.validCol(column))
+    {
+      //Logger.log("Debug: cell: r " + row + ", c " + column);
+      return this.spreadsheet.objCells[row][column].isEmpty();
+    }
+    
+    Logger.log("Error emptyCell: cell: r " + row + ", c " + column);
+    return null;
   };
 
   this.parse_syntax_IDENTIFIER = function(cell){
