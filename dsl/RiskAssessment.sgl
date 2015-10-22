@@ -3,88 +3,76 @@ language RiskAssessment: RiskAssessment;
  
 https://docs.google.com/spreadsheets/d/1kkDjDjTZ3VKvgSbQtodFPqbFdRmAIqRPimQadC3DFzw/edit#gid=745515370 
 
-"Main Components"
-"Operation, Activity,  Equipment or Component under consideration"  
-"Responsible person (Risk identified by)"
-"Aspect Under Consideration"  
-"Significant Hazards" 
-"Who is at risk ?"  
-"Likelihood 1-5"  
-"Severity 1-5"  
-"Result"  
-"Action Required" 
-"Mitigation measure taken by Designer.       (1) Remove,     2)Reduce,       (3)Protection, (4)Information"
-"Software"  
-"Mechanical/hardware" 
-"User manual" 
-"Other" 
-"Reason why not actioned at higher mitigation / elimination level ?"
-"Residual Likelihood" 
-"Residual Severity" 
-"Result"  
-"Notes to assist recipient in further reducing the residual hazard risk"
-"Standards / legislation" 
-"Description by department/contacts"
-
-Main Components   - string
-Operation, Activity,  Equipment or Component under consideration  - string
+Main Components	  - string
+Operation, Activity,  Equipment or Component under consideration	- string
 "Responsible person 
-(Risk identified by)" - string: (Name+,?)
-Aspect Under Consideration   - string
-Significant Hazards - string
+(Risk identified by)"	- string: (Name+,?)
+Aspect Under Consideration	 - string
+Significant Hazards	- string
 Who is at risk ?  - string
-Likelihood 1-5  - number 1-5 empty?
-Severity 1-5  - number 1-5 empty?
-Result  - 1-25 empty?
-Action Required - yes/no/ blank
-Mitigation measure taken by Designer.       (1) Remove,     2)Reduce,       (3)Protection, (4)Information - comma-separated numbers 1-4 or blank  
-Software - string 
-Mechanical/hardware - string  
-User manual - string
-Other - string
-Reason why not actioned at higher mitigation / elimination level ? - string 
-Residual Likelihood - number 1-5 empty?
+Likelihood 1-5	- number 1-5 empty?
+Severity 1-5	- number 1-5 empty?
+Result	- 1-25 empty?
+Action Required	- yes/no/ blank
+Mitigation measure taken by Designer.       (1) Remove,     2)Reduce,       (3)Protection, (4)Information - comma-separated numbers 1-4 or blank	
+Software - string	
+Mechanical/hardware - string	
+User manual	- string
+Other	- string
+Reason why not actioned at higher mitigation / elimination level ? - string	
+Residual Likelihood	- number 1-5 empty?
 Residual Severity - number 1-5 empty?
-Result  - 1-25 empty?
-Notes to assist recipient in further reducing the residual hazard risk - string 
-Standards / legislation - string
+Result	- 1-25 empty?
+Notes to assist recipient in further reducing the residual hazard risk - string	
+Standards / legislation	- string
 Description by department/contacts - string
 */
 
-block RiskAssessment { 
+block RiskAssessment {
   //name = column "Main Components": IDENTIFIER;
-  opperation = column "Operation, Activity,  Equipment or Component under consideration": STRING;
-  risks* = block Risks;
-}
-
-block Risks { 
   //opperation = column " Operation, Activity,  Equipment or Component under consideration": STRING;
-  responsible = column "Responsible person (Risk identified by)": STRING;
-  aspect ?= column "Aspect Under Consideration": STRING;
-  hazards = column "Significant Hazards": STRING;
-  risk = column "Who is at risk ?": STRING;
-  likelihood = column "Likelihood 1-5": rule number;
-  severity = column "Severity 1-5": rule number;
-  result = column "Result": rule number;
-  action ?= column "Action Required": rule yes_no;
-  mitigation ?= column "Mitigation measure taken by Designer.       (1) Remove,     2)Reduce,       (3)Protection, (4)Information": STRING;
-  software ?= column "Software": STRING;
-  mech_hw ?= column "Mechanical/hardware": STRING;
-  manual ?= column "User manual": STRING;
-  other ?= column "Other": STRING;
-  reason ?= column "Reason why not actioned at higher mitigation / elimination level ?": STRING;
-  res_likelihood ?= column "Residual Likelihood": rule number;
-  res_severity ?= column "Residual Severity": rule number;
-  res_result ?= column "Result": rule number;
-  notes ?= column "Notes to assist recipient in further reducing the residual hazard risk": STRING;
-  standards ?= column "Standards / legislation": STRING;
-  description ?= column "Description by department/contacts": STRING;
+  risk = column "Risk": STR;
+  hazards = column "Hazards": STR;
+  likelihood = column "Likeli-hood": INT;
+  severity = column "Seve-rity": INT;
+  result = column "Result": INT;
+  reduction = column "Reduction required": rule yes_no;
+  action_desc = column "Action": STR;
+  mitigation = column "Mitigation measures": STR;
+  input = column "Input": rule Input;
+  condition = column "Condition": rule Condition;
+  actions = column "Actions": ID;
+  comment = column "Comment": STR;
 }
-
-rule number:
-  INTEGER
-;
 
 rule yes_no:
-  token "yes"|token "no"
+  @"yes"|@"no"
+;
+
+rule Input:
+  rule InputCategory @";" rule Input | rule InputCategory
+;
+
+rule InputCategory:
+  ID @"@" INT @"Hz" @":" rule InputComponents | ID @":" rule InputComponents
+;
+
+rule InputComponents:
+  ID @"," rule InputComponents | ID
+;
+
+rule Condition:
+  rule Cond @"and" rule Condition | rule Cond @"or" rule Condition | rule Cond
+;
+
+rule Cond:
+  rule BasicCond rule ByClause | rule BasicCond
+;
+
+rule BasicCond:
+  ID @">" ID | ID @"=" ID
+;
+
+rule ByClause:
+  @"by" INT @"%" @"for" INT @"sec"
 ;

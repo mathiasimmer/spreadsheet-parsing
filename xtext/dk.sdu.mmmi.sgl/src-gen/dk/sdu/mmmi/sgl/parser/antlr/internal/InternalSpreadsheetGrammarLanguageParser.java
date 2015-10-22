@@ -21,7 +21,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'language'", "':'", "';'", "'block'", "'{'", "'}'", "'*'", "'='", "'?='", "'column'", "'IDENTIFIER'", "'STRING'", "'INTEGER'", "'token'", "'rule'", "'|'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'language'", "':'", "';'", "'block'", "'{'", "'}'", "'*'", "'='", "'?='", "'column'", "'ID'", "'STR'", "'INT'", "'@'", "'rule'", "'|'"
     };
     public static final int RULE_STRING=5;
     public static final int RULE_SL_COMMENT=8;
@@ -1475,7 +1475,7 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalAn
 
 
     // $ANTLR start "ruleSyntax"
-    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:612:1: ruleSyntax returns [EObject current=null] : ( ( (lv_is_id_0_0= 'IDENTIFIER' ) ) | ( (lv_is_string_1_0= 'STRING' ) ) | ( (lv_is_int_2_0= 'INTEGER' ) ) | (otherlv_3= 'token' ( (lv_token_4_0= RULE_STRING ) ) ) | (otherlv_5= 'rule' ( (otherlv_6= RULE_ID ) ) ) ) ;
+    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:612:1: ruleSyntax returns [EObject current=null] : ( ( (lv_is_id_0_0= 'ID' ) ) | ( (lv_is_string_1_0= 'STR' ) ) | ( (lv_is_int_2_0= 'INT' ) ) | (otherlv_3= '@' ( (lv_token_4_0= RULE_STRING ) ) ) | (otherlv_5= 'rule' ( (otherlv_6= RULE_ID ) ) ) ) ;
     public final EObject ruleSyntax() throws RecognitionException {
         EObject current = null;
 
@@ -1490,10 +1490,10 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalAn
          enterRule(); 
             
         try {
-            // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:615:28: ( ( ( (lv_is_id_0_0= 'IDENTIFIER' ) ) | ( (lv_is_string_1_0= 'STRING' ) ) | ( (lv_is_int_2_0= 'INTEGER' ) ) | (otherlv_3= 'token' ( (lv_token_4_0= RULE_STRING ) ) ) | (otherlv_5= 'rule' ( (otherlv_6= RULE_ID ) ) ) ) )
-            // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:616:1: ( ( (lv_is_id_0_0= 'IDENTIFIER' ) ) | ( (lv_is_string_1_0= 'STRING' ) ) | ( (lv_is_int_2_0= 'INTEGER' ) ) | (otherlv_3= 'token' ( (lv_token_4_0= RULE_STRING ) ) ) | (otherlv_5= 'rule' ( (otherlv_6= RULE_ID ) ) ) )
+            // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:615:28: ( ( ( (lv_is_id_0_0= 'ID' ) ) | ( (lv_is_string_1_0= 'STR' ) ) | ( (lv_is_int_2_0= 'INT' ) ) | (otherlv_3= '@' ( (lv_token_4_0= RULE_STRING ) ) ) | (otherlv_5= 'rule' ( (otherlv_6= RULE_ID ) ) ) ) )
+            // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:616:1: ( ( (lv_is_id_0_0= 'ID' ) ) | ( (lv_is_string_1_0= 'STR' ) ) | ( (lv_is_int_2_0= 'INT' ) ) | (otherlv_3= '@' ( (lv_token_4_0= RULE_STRING ) ) ) | (otherlv_5= 'rule' ( (otherlv_6= RULE_ID ) ) ) )
             {
-            // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:616:1: ( ( (lv_is_id_0_0= 'IDENTIFIER' ) ) | ( (lv_is_string_1_0= 'STRING' ) ) | ( (lv_is_int_2_0= 'INTEGER' ) ) | (otherlv_3= 'token' ( (lv_token_4_0= RULE_STRING ) ) ) | (otherlv_5= 'rule' ( (otherlv_6= RULE_ID ) ) ) )
+            // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:616:1: ( ( (lv_is_id_0_0= 'ID' ) ) | ( (lv_is_string_1_0= 'STR' ) ) | ( (lv_is_int_2_0= 'INT' ) ) | (otherlv_3= '@' ( (lv_token_4_0= RULE_STRING ) ) ) | (otherlv_5= 'rule' ( (otherlv_6= RULE_ID ) ) ) )
             int alt7=5;
             switch ( input.LA(1) ) {
             case 21:
@@ -1530,23 +1530,23 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalAn
 
             switch (alt7) {
                 case 1 :
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:616:2: ( (lv_is_id_0_0= 'IDENTIFIER' ) )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:616:2: ( (lv_is_id_0_0= 'ID' ) )
                     {
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:616:2: ( (lv_is_id_0_0= 'IDENTIFIER' ) )
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:617:1: (lv_is_id_0_0= 'IDENTIFIER' )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:616:2: ( (lv_is_id_0_0= 'ID' ) )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:617:1: (lv_is_id_0_0= 'ID' )
                     {
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:617:1: (lv_is_id_0_0= 'IDENTIFIER' )
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:618:3: lv_is_id_0_0= 'IDENTIFIER'
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:617:1: (lv_is_id_0_0= 'ID' )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:618:3: lv_is_id_0_0= 'ID'
                     {
                     lv_is_id_0_0=(Token)match(input,21,FOLLOW_21_in_ruleSyntax1414); 
 
-                            newLeafNode(lv_is_id_0_0, grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0());
+                            newLeafNode(lv_is_id_0_0, grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0());
                         
 
                     	        if (current==null) {
                     	            current = createModelElement(grammarAccess.getSyntaxRule());
                     	        }
-                           		setWithLastConsumed(current, "is_id", true, "IDENTIFIER");
+                           		setWithLastConsumed(current, "is_id", true, "ID");
                     	    
 
                     }
@@ -1558,23 +1558,23 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalAn
                     }
                     break;
                 case 2 :
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:632:6: ( (lv_is_string_1_0= 'STRING' ) )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:632:6: ( (lv_is_string_1_0= 'STR' ) )
                     {
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:632:6: ( (lv_is_string_1_0= 'STRING' ) )
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:633:1: (lv_is_string_1_0= 'STRING' )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:632:6: ( (lv_is_string_1_0= 'STR' ) )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:633:1: (lv_is_string_1_0= 'STR' )
                     {
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:633:1: (lv_is_string_1_0= 'STRING' )
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:634:3: lv_is_string_1_0= 'STRING'
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:633:1: (lv_is_string_1_0= 'STR' )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:634:3: lv_is_string_1_0= 'STR'
                     {
                     lv_is_string_1_0=(Token)match(input,22,FOLLOW_22_in_ruleSyntax1451); 
 
-                            newLeafNode(lv_is_string_1_0, grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0());
+                            newLeafNode(lv_is_string_1_0, grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0());
                         
 
                     	        if (current==null) {
                     	            current = createModelElement(grammarAccess.getSyntaxRule());
                     	        }
-                           		setWithLastConsumed(current, "is_string", true, "STRING");
+                           		setWithLastConsumed(current, "is_string", true, "STR");
                     	    
 
                     }
@@ -1586,23 +1586,23 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalAn
                     }
                     break;
                 case 3 :
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:648:6: ( (lv_is_int_2_0= 'INTEGER' ) )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:648:6: ( (lv_is_int_2_0= 'INT' ) )
                     {
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:648:6: ( (lv_is_int_2_0= 'INTEGER' ) )
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:649:1: (lv_is_int_2_0= 'INTEGER' )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:648:6: ( (lv_is_int_2_0= 'INT' ) )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:649:1: (lv_is_int_2_0= 'INT' )
                     {
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:649:1: (lv_is_int_2_0= 'INTEGER' )
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:650:3: lv_is_int_2_0= 'INTEGER'
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:649:1: (lv_is_int_2_0= 'INT' )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:650:3: lv_is_int_2_0= 'INT'
                     {
                     lv_is_int_2_0=(Token)match(input,23,FOLLOW_23_in_ruleSyntax1488); 
 
-                            newLeafNode(lv_is_int_2_0, grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0());
+                            newLeafNode(lv_is_int_2_0, grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0());
                         
 
                     	        if (current==null) {
                     	            current = createModelElement(grammarAccess.getSyntaxRule());
                     	        }
-                           		setWithLastConsumed(current, "is_int", true, "INTEGER");
+                           		setWithLastConsumed(current, "is_int", true, "INT");
                     	    
 
                     }
@@ -1614,14 +1614,14 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalAn
                     }
                     break;
                 case 4 :
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:664:6: (otherlv_3= 'token' ( (lv_token_4_0= RULE_STRING ) ) )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:664:6: (otherlv_3= '@' ( (lv_token_4_0= RULE_STRING ) ) )
                     {
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:664:6: (otherlv_3= 'token' ( (lv_token_4_0= RULE_STRING ) ) )
-                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:664:8: otherlv_3= 'token' ( (lv_token_4_0= RULE_STRING ) )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:664:6: (otherlv_3= '@' ( (lv_token_4_0= RULE_STRING ) ) )
+                    // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:664:8: otherlv_3= '@' ( (lv_token_4_0= RULE_STRING ) )
                     {
                     otherlv_3=(Token)match(input,24,FOLLOW_24_in_ruleSyntax1520); 
 
-                        	newLeafNode(otherlv_3, grammarAccess.getSyntaxAccess().getTokenKeyword_3_0());
+                        	newLeafNode(otherlv_3, grammarAccess.getSyntaxAccess().getCommercialAtKeyword_3_0());
                         
                     // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:668:1: ( (lv_token_4_0= RULE_STRING ) )
                     // ../dk.sdu.mmmi.sgl/src-gen/dk/sdu/mmmi/sgl/parser/antlr/internal/InternalSpreadsheetGrammarLanguage.g:669:1: (lv_token_4_0= RULE_STRING )

@@ -218,7 +218,7 @@ public class SpreadsheetGrammarLanguageSemanticSequencer extends AbstractDelegat
 	
 	/**
 	 * Constraint:
-	 *     (is_id?='IDENTIFIER' | is_string?='STRING' | is_int?='INTEGER' | token=STRING | rule=[Rule|ID])
+	 *     (is_id?='ID' | is_string?='STR' | is_int?='INT' | token=STRING | rule=[Rule|ID])
 	 */
 	protected void sequence_Syntax(EObject context, Syntax semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

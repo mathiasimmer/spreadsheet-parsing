@@ -40,7 +40,7 @@ BlockSpec:
 ;
 
 Syntax:
-	is_id?='IDENTIFIER' | is_string?='STRING' | is_int?='INTEGER' | 'token' token=STRING | 'rule' rule=[Rule]
+	is_id?='ID' | is_string?='STR' | is_int?='INT' | '@' token=STRING | 'rule' rule=[Rule]
 ;
 
 Rule:
