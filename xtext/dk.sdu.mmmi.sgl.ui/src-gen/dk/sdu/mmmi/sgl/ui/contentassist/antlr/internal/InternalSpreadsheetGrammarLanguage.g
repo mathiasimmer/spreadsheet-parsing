@@ -1346,11 +1346,11 @@ rule__Syntax__Group_3__0__Impl
     }
 :
 (
-{ before(grammarAccess.getSyntaxAccess().getTokenKeyword_3_0()); }
+{ before(grammarAccess.getSyntaxAccess().getCommercialAtKeyword_3_0()); }
 
-	'token' 
+	'@' 
 
-{ after(grammarAccess.getSyntaxAccess().getTokenKeyword_3_0()); }
+{ after(grammarAccess.getSyntaxAccess().getCommercialAtKeyword_3_0()); }
 )
 
 ;
@@ -1926,16 +1926,16 @@ rule__Syntax__Is_idAssignment_0
     }
 :
 (
-{ before(grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0()); }
+{ before(grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0()); }
 (
-{ before(grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0()); }
+{ before(grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0()); }
 
-	'IDENTIFIER' 
+	'ID' 
 
-{ after(grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0()); }
+{ after(grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0()); }
 )
 
-{ after(grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0()); }
+{ after(grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0()); }
 )
 
 ;
@@ -1949,16 +1949,16 @@ rule__Syntax__Is_stringAssignment_1
     }
 :
 (
-{ before(grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0()); }
+{ before(grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0()); }
 (
-{ before(grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0()); }
+{ before(grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0()); }
 
-	'STRING' 
+	'STR' 
 
-{ after(grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0()); }
+{ after(grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0()); }
 )
 
-{ after(grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0()); }
+{ after(grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0()); }
 )
 
 ;
@@ -1972,16 +1972,16 @@ rule__Syntax__Is_intAssignment_2
     }
 :
 (
-{ before(grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0()); }
+{ before(grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0()); }
 (
-{ before(grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0()); }
+{ before(grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0()); }
 
-	'INTEGER' 
+	'INT' 
 
-{ after(grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0()); }
+{ after(grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0()); }
 )
 
-{ after(grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0()); }
+{ after(grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0()); }
 )
 
 ;

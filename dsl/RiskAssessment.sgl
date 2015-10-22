@@ -30,38 +30,49 @@ Description by department/contacts - string
 
 block RiskAssessment {
   //name = column "Main Components": IDENTIFIER;
-  opperation = column " Operation, Activity,  Equipment or Component under consideration": STRING;
-  risks* = block Risks;
-}
-
-block Risks {
   //opperation = column " Operation, Activity,  Equipment or Component under consideration": STRING;
-  responsible = column "Responsible person (Risk identified by)": STRING;
-  aspect ?= column "Aspect Under Consideration": STRING;
-  hazards = column "Significant Hazards": STRING;
-  risk = column "Who is at risk ?": STRING;
-  likelihood = column "Likelihood 1-5": rule number;
-  severity = column "Severity 1-5": rule number;
-  result = column "Result": rule number;
-  action ?= column "Action Required": rule yes_no;
-  mitigation ?= column "Mitigation measure taken by Designer.       (1) Remove,     2)Reduce,       (3)Protection, (4)Information": STRING;
-  software ?= column "Software": STRING;
-  mech_hw ?= column "Mechanical/hardware": STRING;
-  manual ?= column "User manual": STRING;
-  other ?= column "Other": STRING;
-  reason ?= column "Reason why not actioned at higher mitigation / elimination level ?": STRING;
-  res_likelihood ?= column "Residual Likelihood": rule number;
-  res_severity ?= column "Residual Severity": rule number;
-  res_result ?= column "Result": rule number;
-  notes ?= column "Notes to assist recipient in further reducing the residual hazard risk": STRING;
-  standards ?= column "Standards / legislation": STRING;
-  description ?= column "Description by department/contacts": STRING;
+  risk = column "Risk": STR;
+  hazards = column "Hazards": STR;
+  likelihood = column "Likeli-hood": INT;
+  severity = column "Seve-rity": INT;
+  result = column "Result": INT;
+  reduction = column "Reduction required": rule yes_no;
+  action_desc = column "Action": STR;
+  mitigation = column "Mitigation measures": STR;
+  input = column "Input": rule Input;
+  condition = column "Condition": rule Condition;
+  actions = column "Actions": ID;
+  comment = column "Comment": STR;
 }
-
-rule number:
-  INTEGER
-;
 
 rule yes_no:
-  token "yes"|token "no"
+  @"yes"|@"no"
+;
+
+rule Input:
+  rule InputCategory @";" rule Input | rule InputCategory
+;
+
+rule InputCategory:
+  ID @"@" INT @"Hz" @":" rule InputComponents | ID @":" rule InputComponents
+;
+
+rule InputComponents:
+  ID @"," rule InputComponents | ID
+;
+
+rule Condition:
+  rule Cond @"and" rule Condition | rule Cond @"or" rule Condition | rule Cond
+;
+
+rule Cond:
+  rule BasicCond rule ByClause | rule BasicCond
+;
+
+rule BasicCond:
+  ID @">" ID | ID @"=" ID
+;
+
+rule ByClause:
+  @"by" INT @"%" @"for" INT @"sec"
 ;

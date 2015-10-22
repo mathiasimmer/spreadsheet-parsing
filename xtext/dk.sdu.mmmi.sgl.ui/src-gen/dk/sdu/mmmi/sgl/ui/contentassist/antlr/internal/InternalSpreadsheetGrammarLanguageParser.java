@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'language'", "':'", "';'", "'block'", "'{'", "'}'", "'='", "'?='", "'column'", "'token'", "'rule'", "'|'", "'*'", "'IDENTIFIER'", "'STRING'", "'INTEGER'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'language'", "':'", "';'", "'block'", "'{'", "'}'", "'='", "'?='", "'column'", "'@'", "'rule'", "'|'", "'*'", "'ID'", "'STR'", "'INT'"
     };
     public static final int RULE_STRING=5;
     public static final int RULE_SL_COMMENT=8;
@@ -3608,21 +3608,21 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalCo
 
 
     // $ANTLR start "rule__Syntax__Group_3__0__Impl"
-    // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1343:1: rule__Syntax__Group_3__0__Impl : ( 'token' ) ;
+    // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1343:1: rule__Syntax__Group_3__0__Impl : ( '@' ) ;
     public final void rule__Syntax__Group_3__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1347:1: ( ( 'token' ) )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1348:1: ( 'token' )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1347:1: ( ( '@' ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1348:1: ( '@' )
             {
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1348:1: ( 'token' )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1349:1: 'token'
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1348:1: ( '@' )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1349:1: '@'
             {
-             before(grammarAccess.getSyntaxAccess().getTokenKeyword_3_0()); 
+             before(grammarAccess.getSyntaxAccess().getCommercialAtKeyword_3_0()); 
             match(input,20,FOLLOW_20_in_rule__Syntax__Group_3__0__Impl2704); 
-             after(grammarAccess.getSyntaxAccess().getTokenKeyword_3_0()); 
+             after(grammarAccess.getSyntaxAccess().getCommercialAtKeyword_3_0()); 
 
             }
 
@@ -5057,29 +5057,29 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalCo
 
 
     // $ANTLR start "rule__Syntax__Is_idAssignment_0"
-    // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1923:1: rule__Syntax__Is_idAssignment_0 : ( ( 'IDENTIFIER' ) ) ;
+    // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1923:1: rule__Syntax__Is_idAssignment_0 : ( ( 'ID' ) ) ;
     public final void rule__Syntax__Is_idAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1927:1: ( ( ( 'IDENTIFIER' ) ) )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1928:1: ( ( 'IDENTIFIER' ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1927:1: ( ( ( 'ID' ) ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1928:1: ( ( 'ID' ) )
             {
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1928:1: ( ( 'IDENTIFIER' ) )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1929:1: ( 'IDENTIFIER' )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1928:1: ( ( 'ID' ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1929:1: ( 'ID' )
             {
-             before(grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0()); 
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1930:1: ( 'IDENTIFIER' )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1931:1: 'IDENTIFIER'
+             before(grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0()); 
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1930:1: ( 'ID' )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1931:1: 'ID'
             {
-             before(grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0()); 
+             before(grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0()); 
             match(input,24,FOLLOW_24_in_rule__Syntax__Is_idAssignment_03860); 
-             after(grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0()); 
+             after(grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0()); 
 
             }
 
-             after(grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0()); 
+             after(grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0()); 
 
             }
 
@@ -5102,29 +5102,29 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalCo
 
 
     // $ANTLR start "rule__Syntax__Is_stringAssignment_1"
-    // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1946:1: rule__Syntax__Is_stringAssignment_1 : ( ( 'STRING' ) ) ;
+    // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1946:1: rule__Syntax__Is_stringAssignment_1 : ( ( 'STR' ) ) ;
     public final void rule__Syntax__Is_stringAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1950:1: ( ( ( 'STRING' ) ) )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1951:1: ( ( 'STRING' ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1950:1: ( ( ( 'STR' ) ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1951:1: ( ( 'STR' ) )
             {
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1951:1: ( ( 'STRING' ) )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1952:1: ( 'STRING' )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1951:1: ( ( 'STR' ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1952:1: ( 'STR' )
             {
-             before(grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0()); 
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1953:1: ( 'STRING' )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1954:1: 'STRING'
+             before(grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0()); 
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1953:1: ( 'STR' )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1954:1: 'STR'
             {
-             before(grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0()); 
+             before(grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0()); 
             match(input,25,FOLLOW_25_in_rule__Syntax__Is_stringAssignment_13904); 
-             after(grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0()); 
+             after(grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0()); 
 
             }
 
-             after(grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0()); 
+             after(grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0()); 
 
             }
 
@@ -5147,29 +5147,29 @@ public class InternalSpreadsheetGrammarLanguageParser extends AbstractInternalCo
 
 
     // $ANTLR start "rule__Syntax__Is_intAssignment_2"
-    // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1969:1: rule__Syntax__Is_intAssignment_2 : ( ( 'INTEGER' ) ) ;
+    // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1969:1: rule__Syntax__Is_intAssignment_2 : ( ( 'INT' ) ) ;
     public final void rule__Syntax__Is_intAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1973:1: ( ( ( 'INTEGER' ) ) )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1974:1: ( ( 'INTEGER' ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1973:1: ( ( ( 'INT' ) ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1974:1: ( ( 'INT' ) )
             {
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1974:1: ( ( 'INTEGER' ) )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1975:1: ( 'INTEGER' )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1974:1: ( ( 'INT' ) )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1975:1: ( 'INT' )
             {
-             before(grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0()); 
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1976:1: ( 'INTEGER' )
-            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1977:1: 'INTEGER'
+             before(grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0()); 
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1976:1: ( 'INT' )
+            // ../dk.sdu.mmmi.sgl.ui/src-gen/dk/sdu/mmmi/sgl/ui/contentassist/antlr/internal/InternalSpreadsheetGrammarLanguage.g:1977:1: 'INT'
             {
-             before(grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0()); 
+             before(grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0()); 
             match(input,26,FOLLOW_26_in_rule__Syntax__Is_intAssignment_23948); 
-             after(grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0()); 
+             after(grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0()); 
 
             }
 
-             after(grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0()); 
+             after(grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0()); 
 
             }
 

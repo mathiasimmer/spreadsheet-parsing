@@ -615,55 +615,55 @@ ruleSyntax returns [EObject current=null]
     @after { leaveRule(); }:
 ((
 (
-		lv_is_id_0_0=	'IDENTIFIER' 
+		lv_is_id_0_0=	'ID' 
     {
-        newLeafNode(lv_is_id_0_0, grammarAccess.getSyntaxAccess().getIs_idIDENTIFIERKeyword_0_0());
+        newLeafNode(lv_is_id_0_0, grammarAccess.getSyntaxAccess().getIs_idIDKeyword_0_0());
     }
  
 	    {
 	        if ($current==null) {
 	            $current = createModelElement(grammarAccess.getSyntaxRule());
 	        }
-       		setWithLastConsumed($current, "is_id", true, "IDENTIFIER");
+       		setWithLastConsumed($current, "is_id", true, "ID");
 	    }
 
 )
 )
     |(
 (
-		lv_is_string_1_0=	'STRING' 
+		lv_is_string_1_0=	'STR' 
     {
-        newLeafNode(lv_is_string_1_0, grammarAccess.getSyntaxAccess().getIs_stringSTRINGKeyword_1_0());
+        newLeafNode(lv_is_string_1_0, grammarAccess.getSyntaxAccess().getIs_stringSTRKeyword_1_0());
     }
  
 	    {
 	        if ($current==null) {
 	            $current = createModelElement(grammarAccess.getSyntaxRule());
 	        }
-       		setWithLastConsumed($current, "is_string", true, "STRING");
+       		setWithLastConsumed($current, "is_string", true, "STR");
 	    }
 
 )
 )
     |(
 (
-		lv_is_int_2_0=	'INTEGER' 
+		lv_is_int_2_0=	'INT' 
     {
-        newLeafNode(lv_is_int_2_0, grammarAccess.getSyntaxAccess().getIs_intINTEGERKeyword_2_0());
+        newLeafNode(lv_is_int_2_0, grammarAccess.getSyntaxAccess().getIs_intINTKeyword_2_0());
     }
  
 	    {
 	        if ($current==null) {
 	            $current = createModelElement(grammarAccess.getSyntaxRule());
 	        }
-       		setWithLastConsumed($current, "is_int", true, "INTEGER");
+       		setWithLastConsumed($current, "is_int", true, "INT");
 	    }
 
 )
 )
-    |(	otherlv_3='token' 
+    |(	otherlv_3='@' 
     {
-    	newLeafNode(otherlv_3, grammarAccess.getSyntaxAccess().getTokenKeyword_3_0());
+    	newLeafNode(otherlv_3, grammarAccess.getSyntaxAccess().getCommercialAtKeyword_3_0());
     }
 (
 (

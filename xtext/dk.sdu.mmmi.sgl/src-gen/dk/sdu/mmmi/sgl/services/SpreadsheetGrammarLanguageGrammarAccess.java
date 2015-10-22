@@ -326,13 +326,13 @@ public class SpreadsheetGrammarLanguageGrammarAccess extends AbstractGrammarElem
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Syntax");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Assignment cIs_idAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
-		private final Keyword cIs_idIDENTIFIERKeyword_0_0 = (Keyword)cIs_idAssignment_0.eContents().get(0);
+		private final Keyword cIs_idIDKeyword_0_0 = (Keyword)cIs_idAssignment_0.eContents().get(0);
 		private final Assignment cIs_stringAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
-		private final Keyword cIs_stringSTRINGKeyword_1_0 = (Keyword)cIs_stringAssignment_1.eContents().get(0);
+		private final Keyword cIs_stringSTRKeyword_1_0 = (Keyword)cIs_stringAssignment_1.eContents().get(0);
 		private final Assignment cIs_intAssignment_2 = (Assignment)cAlternatives.eContents().get(2);
-		private final Keyword cIs_intINTEGERKeyword_2_0 = (Keyword)cIs_intAssignment_2.eContents().get(0);
+		private final Keyword cIs_intINTKeyword_2_0 = (Keyword)cIs_intAssignment_2.eContents().get(0);
 		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
-		private final Keyword cTokenKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Keyword cCommercialAtKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cTokenAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cTokenSTRINGTerminalRuleCall_3_1_0 = (RuleCall)cTokenAssignment_3_1.eContents().get(0);
 		private final Group cGroup_4 = (Group)cAlternatives.eContents().get(4);
@@ -342,35 +342,35 @@ public class SpreadsheetGrammarLanguageGrammarAccess extends AbstractGrammarElem
 		private final RuleCall cRuleRuleIDTerminalRuleCall_4_1_0_1 = (RuleCall)cRuleRuleCrossReference_4_1_0.eContents().get(1);
 		
 		//Syntax:
-		//	is_id?="IDENTIFIER" | is_string?="STRING" | is_int?="INTEGER" | "token" token=STRING | "rule" rule=[Rule];
+		//	is_id?="ID" | is_string?="STR" | is_int?="INT" | "@" token=STRING | "rule" rule=[Rule];
 		public ParserRule getRule() { return rule; }
 
-		//is_id?="IDENTIFIER" | is_string?="STRING" | is_int?="INTEGER" | "token" token=STRING | "rule" rule=[Rule]
+		//is_id?="ID" | is_string?="STR" | is_int?="INT" | "@" token=STRING | "rule" rule=[Rule]
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//is_id?="IDENTIFIER"
+		//is_id?="ID"
 		public Assignment getIs_idAssignment_0() { return cIs_idAssignment_0; }
 
-		//"IDENTIFIER"
-		public Keyword getIs_idIDENTIFIERKeyword_0_0() { return cIs_idIDENTIFIERKeyword_0_0; }
+		//"ID"
+		public Keyword getIs_idIDKeyword_0_0() { return cIs_idIDKeyword_0_0; }
 
-		//is_string?="STRING"
+		//is_string?="STR"
 		public Assignment getIs_stringAssignment_1() { return cIs_stringAssignment_1; }
 
-		//"STRING"
-		public Keyword getIs_stringSTRINGKeyword_1_0() { return cIs_stringSTRINGKeyword_1_0; }
+		//"STR"
+		public Keyword getIs_stringSTRKeyword_1_0() { return cIs_stringSTRKeyword_1_0; }
 
-		//is_int?="INTEGER"
+		//is_int?="INT"
 		public Assignment getIs_intAssignment_2() { return cIs_intAssignment_2; }
 
-		//"INTEGER"
-		public Keyword getIs_intINTEGERKeyword_2_0() { return cIs_intINTEGERKeyword_2_0; }
+		//"INT"
+		public Keyword getIs_intINTKeyword_2_0() { return cIs_intINTKeyword_2_0; }
 
-		//"token" token=STRING
+		//"@" token=STRING
 		public Group getGroup_3() { return cGroup_3; }
 
-		//"token"
-		public Keyword getTokenKeyword_3_0() { return cTokenKeyword_3_0; }
+		//"@"
+		public Keyword getCommercialAtKeyword_3_0() { return cCommercialAtKeyword_3_0; }
 
 		//token=STRING
 		public Assignment getTokenAssignment_3_1() { return cTokenAssignment_3_1; }
@@ -633,7 +633,7 @@ public class SpreadsheetGrammarLanguageGrammarAccess extends AbstractGrammarElem
 	}
 
 	//Syntax:
-	//	is_id?="IDENTIFIER" | is_string?="STRING" | is_int?="INTEGER" | "token" token=STRING | "rule" rule=[Rule];
+	//	is_id?="ID" | is_string?="STR" | is_int?="INT" | "@" token=STRING | "rule" rule=[Rule];
 	public SyntaxElements getSyntaxAccess() {
 		return pSyntax;
 	}

@@ -1,42 +1,42 @@
 language Questionnaire: Forms;
 
 block Forms {
-  name = column "Form": IDENTIFIER;
+  name = column "Form": ID;
   questions* = block Question;
 }
 
 block Question {
-  name = column "Name": IDENTIFIER;
-  question = column "Question": STRING;
+  name = column "Name": ID;
+  question = column "Question": STR;
   type = column "Type": rule Datatype;
   value ?= column "Value": rule AExp;
   condition ?= column "Condition": rule BExp;
 }
 
 rule Datatype:
-  token "boolean" | token "money" | token "int"
+  @"boolean" | @"money" | @"int"
 ;
 
 rule AExp:
-  rule Add | rule Sub | INTEGER | IDENTIFIER
+  rule Add | rule Sub | INT | ID
 ;
 
 rule Add:
-  token "(" rule AExp token "+" rule AExp token ")"
+  @"(" rule AExp @"+" rule AExp @")"
 ;
 
 rule Sub:
-  token "(" rule AExp token "-" rule AExp token ")"
+  @"(" rule AExp @"-" rule AExp @")"
 ;
 
 rule BExp:
-   rule And | rule Or | IDENTIFIER
+   rule And | rule Or | ID
 ;
 
 rule And:
-  token "(" rule BExp token "and" rule BExp token ")"
+  @"(" rule BExp @"and" rule BExp @")"
 ;
 
 rule Or:
-  token "(" rule BExp token "or" rule BExp token ")"
+  @"(" rule BExp @"or" rule BExp @")"
 ;
