@@ -114,13 +114,13 @@ class JSCodeGen extends BaseCodeGen {
 	def genInternalParser(EList<Syntax> list, String name, String dataname) 
 	{
 		var code_gen=
-		'''
+		'''	
 		
-			
 		this.parse_syntax_«name» = function(text){
 			var current = text;
 			var result = [];
-			var object_and_rest = null;'''
+			var object_and_rest = null;
+		'''
 		for (part:list)
 		{
 			var fn_text = part.generateSyntaxName
@@ -135,15 +135,20 @@ class JSCodeGen extends BaseCodeGen {
 		
 		code_gen += 
 		'''	
+		
 			object_and_rest = this.internal_parse_syntax_«fn_text»;
 			if (object_and_rest===null)
 				return null;
 			result.push(object_and_rest[0]);
-			current = object_and_rest[1];'''
+			current = object_and_rest[1];
+		'''
 		}
 		code_gen +=
-		'''	return [{"«dataname»":result},current];
-		};'''
+		'''
+		
+			return [{"«dataname»":result},current];
+		};
+		'''
 		
 		return code_gen;
 	}

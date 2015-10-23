@@ -142,7 +142,7 @@ function Spreadsheet(){
   //console.log("Spreadsheet constructor");
   this.InitFromSheet = function(){
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheets()[0];
+    var sheet = ss.getActiveSheet();//getSheets()[0];
     this.crtSheet = sheet;
 
     this.noOfRows = sheet.getLastRow();

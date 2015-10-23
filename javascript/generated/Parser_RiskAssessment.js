@@ -8,12 +8,12 @@ function ParseRiskAssessment(spreadsheet){
 	//Logger.log("Empty constructor");
 
 	this.matchColumns = function(columnHeaders){
-		return are_same(columnHeaders,["Operation, Activity,  Equipment or Component under consideration","Responsible person (Risk identified by)","Aspect Under Consideration","Significant Hazards","Who is at risk ?","Likelihood 1-5","Severity 1-5","Result","Action Required","Mitigation measure taken by Designer.       (1) Remove,     2)Reduce,       (3)Protection, (4)Information","Software","Mechanical/hardware","User manual","Other","Reason why not actioned at higher mitigation / elimination level ?","Residual Likelihood","Residual Severity","Result","Notes to assist recipient in further reducing the residual hazard risk","Standards / legislation","Description by department/contacts"]);
+		return are_same(columnHeaders,["Risk","Hazards","Likeli-hood","Seve-rity","Result","Reduction required","Action","Mitigation measures","Input","Condition","Actions","Comment"]);
 	};
 
 
 	this.getColumnHeaders = function(){
-		return ["Operation, Activity,  Equipment or Component under consideration","Responsible person (Risk identified by)","Aspect Under Consideration","Significant Hazards","Who is at risk ?","Likelihood 1-5","Severity 1-5","Result","Action Required","Mitigation measure taken by Designer.       (1) Remove,     2)Reduce,       (3)Protection, (4)Information","Software","Mechanical/hardware","User manual","Other","Reason why not actioned at higher mitigation / elimination level ?","Residual Likelihood","Residual Severity","Result","Notes to assist recipient in further reducing the residual hazard risk","Standards / legislation","Description by department/contacts"];
+		return ["Risk","Hazards","Likeli-hood","Seve-rity","Result","Reduction required","Action","Mitigation measures","Input","Condition","Actions","Comment"];
 	};
 	
 	this.parseBlock = function(row,column,height){
@@ -37,220 +37,68 @@ function ParseRiskAssessment(spreadsheet){
 		var result_row_increment = 1;
 		var result_object = {};
 		var current_column = 0;
-		// Column opperation
+		// Column risk
 		current_column = column+column_offset;
-		var value_opperation = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.opperation = value_opperation;
-		column_offset ++;
-		// Column risks
-		current_column = column+column_offset;
-		var value_risks = [];
-		var relativeRow = 0;
-		while (true)
-		{
-			if (row+relativeRow>=max_row)
-				break;
-			var increment_and_object = this.parse_Risks(row+relativeRow,current_column,max_row);
-			relativeRow += increment_and_object[0];
-			value_risks.push(increment_and_object[1]);
-			if (!this.validRow(row+relativeRow) || !this.emptyCell(row+relativeRow,current_column-1))
-				break;
-		}
-		result_row_increment = Math.max(result_row_increment,relativeRow);
-		result_object.risks = value_risks;
-		column_offset ++;
-		return [result_row_increment,result_object];
-	};
-	
-	this.parse_Risks = function(row,column,max_row){
-		var column_offset = 0;
-		var result_row_increment = 1;
-		var result_object = {};
-		var current_column = 0;
-		// Column responsible
-		current_column = column+column_offset;
-		var value_responsible = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.responsible = value_responsible;
-		column_offset ++;
-		// Column aspect
-		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_aspect = null;
-		else
-			value_aspect = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.aspect = value_aspect;
+		var value_risk = this.parse_syntax_STRING(this.getCell(row,current_column));
+		result_object.risk = value_risk;
 		column_offset ++;
 		// Column hazards
 		current_column = column+column_offset;
 		var value_hazards = this.parse_syntax_STRING(this.getCell(row,current_column));
 		result_object.hazards = value_hazards;
 		column_offset ++;
-		// Column risk
-		current_column = column+column_offset;
-		var value_risk = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.risk = value_risk;
-		column_offset ++;
 		// Column likelihood
 		current_column = column+column_offset;
-		var value_likelihood = this.parse_syntax_number(this.getCell(row,current_column));
+		var value_likelihood = this.parse_syntax_INTEGER(this.getCell(row,current_column));
 		result_object.likelihood = value_likelihood;
 		column_offset ++;
 		// Column severity
 		current_column = column+column_offset;
-		var value_severity = this.parse_syntax_number(this.getCell(row,current_column));
+		var value_severity = this.parse_syntax_INTEGER(this.getCell(row,current_column));
 		result_object.severity = value_severity;
 		column_offset ++;
 		// Column result
 		current_column = column+column_offset;
-		var value_result = this.parse_syntax_number(this.getCell(row,current_column));
+		var value_result = this.parse_syntax_INTEGER(this.getCell(row,current_column));
 		result_object.result = value_result;
 		column_offset ++;
-		// Column action
+		// Column reduction
 		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_action = null;
-		else
-			value_action = this.parse_syntax_yes_no(this.getCell(row,current_column));
-		result_object.action = value_action;
+		var value_reduction = this.parse_syntax_yes_no(this.getCell(row,current_column));
+		result_object.reduction = value_reduction;
+		column_offset ++;
+		// Column action_desc
+		current_column = column+column_offset;
+		var value_action_desc = this.parse_syntax_STRING(this.getCell(row,current_column));
+		result_object.action_desc = value_action_desc;
 		column_offset ++;
 		// Column mitigation
 		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_mitigation = null;
-		else
-			value_mitigation = this.parse_syntax_STRING(this.getCell(row,current_column));
+		var value_mitigation = this.parse_syntax_STRING(this.getCell(row,current_column));
 		result_object.mitigation = value_mitigation;
 		column_offset ++;
-		// Column software
+		// Column input
 		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_software = null;
-		else
-			value_software = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.software = value_software;
+		var value_input = this.parse_syntax_Input(this.getCell(row,current_column));
+		result_object.input = value_input;
 		column_offset ++;
-		// Column mech_hw
+		// Column condition
 		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_mech_hw = null;
-		else
-			value_mech_hw = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.mech_hw = value_mech_hw;
+		var value_condition = this.parse_syntax_Condition(this.getCell(row,current_column));
+		result_object.condition = value_condition;
 		column_offset ++;
-		// Column manual
+		// Column actions
 		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_manual = null;
-		else
-			value_manual = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.manual = value_manual;
+		var value_actions = this.parse_syntax_IDENTIFIER(this.getCell(row,current_column));
+		result_object.actions = value_actions;
 		column_offset ++;
-		// Column other
+		// Column comment
 		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_other = null;
-		else
-			value_other = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.other = value_other;
-		column_offset ++;
-		// Column reason
-		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_reason = null;
-		else
-			value_reason = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.reason = value_reason;
-		column_offset ++;
-		// Column res_likelihood
-		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_res_likelihood = null;
-		else
-			value_res_likelihood = this.parse_syntax_number(this.getCell(row,current_column));
-		result_object.res_likelihood = value_res_likelihood;
-		column_offset ++;
-		// Column res_severity
-		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_res_severity = null;
-		else
-			value_res_severity = this.parse_syntax_number(this.getCell(row,current_column));
-		result_object.res_severity = value_res_severity;
-		column_offset ++;
-		// Column res_result
-		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_res_result = null;
-		else
-			value_res_result = this.parse_syntax_number(this.getCell(row,current_column));
-		result_object.res_result = value_res_result;
-		column_offset ++;
-		// Column notes
-		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_notes = null;
-		else
-			value_notes = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.notes = value_notes;
-		column_offset ++;
-		// Column standards
-		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_standards = null;
-		else
-			value_standards = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.standards = value_standards;
-		column_offset ++;
-		// Column description
-		current_column = column+column_offset;
-		if (this.emptyCell(row,current_column))
-			value_description = null;
-		else
-			value_description = this.parse_syntax_STRING(this.getCell(row,current_column));
-		result_object.description = value_description;
+		var value_comment = this.parse_syntax_STRING(this.getCell(row,current_column));
+		result_object.comment = value_comment;
 		column_offset ++;
 		return [result_row_increment,result_object];
 	};
-	
-	this.parse_syntax_number = function(cell){
-		var object_and_rest = this.internal_parse_syntax_number(cell.data);
-		var error = null;
-		if (object_and_rest===null){
-			error = "Failed parsing as number, text: " + cell.data;
-			Logger.log(error);
-			cell.setError(error);
-			return null;
-		}
-		if(typeof object_and_rest[1] != 'undefined'){
-			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
-			if (rest_maybe.length>0)
-			{
-				error = "Surplus text when parsing number, text: " + rest_maybe;
-				Logger.log(error);
-				cell.setError(error);
-			}
-		}
-		return object_and_rest[0];
-	};
-	
-	this.internal_parse_syntax_number = function(text){
-		var object_and_rest = null;
-		object_and_rest = this.parse_syntax_number_0(text);
-		if (object_and_rest!==null)
-			return object_and_rest;
-		return null;
-	};
-	
-		
-	this.parse_syntax_number_0 = function(text){
-		var current = text;
-		var result = [];
-		var object_and_rest = null;object_and_rest = this.internal_parse_syntax_INTEGER(current);
-	if (object_and_rest===null)
-		return null;
-	result.push(object_and_rest[0]);
-	current = object_and_rest[1];	return [{"number":result},current];
-			};	
 	
 	this.parse_syntax_yes_no = function(cell){
 		var object_and_rest = this.internal_parse_syntax_yes_no(cell.data);
@@ -275,36 +123,618 @@ function ParseRiskAssessment(spreadsheet){
 	
 	this.internal_parse_syntax_yes_no = function(text){
 		var object_and_rest = null;
-		object_and_rest = this.parse_syntax_yes_no_1(text);
+		object_and_rest = this.parse_syntax_yes_no_0(text);
 		if (object_and_rest!==null)
 			return object_and_rest;
-		object_and_rest = this.parse_syntax_yes_no_2(text);
+		object_and_rest = this.parse_syntax_yes_no_1(text);
 		if (object_and_rest!==null)
 			return object_and_rest;
 		return null;
 	};
 	
-		
+	this.parse_syntax_yes_no_0 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_token("yes", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"yes_no":result},current];
+	};
+	
 	this.parse_syntax_yes_no_1 = function(text){
 		var current = text;
 		var result = [];
-		var object_and_rest = null;object_and_rest = this.internal_parse_syntax_token("yes", current);
-	if (object_and_rest===null)
-		return null;
-	result.push(object_and_rest[0]);
-	current = object_and_rest[1];	return [{"yes_no":result},current];
-			};	
+		var object_and_rest = null;
 	
-		
-	this.parse_syntax_yes_no_2 = function(text){
+		object_and_rest = this.internal_parse_syntax_token("no", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"yes_no":result},current];
+	};
+	
+	this.parse_syntax_Input = function(cell){
+		var object_and_rest = this.internal_parse_syntax_Input(cell.data);
+		var error = null;
+		if (object_and_rest===null){
+			error = "Failed parsing as Input, text: " + cell.data;
+			Logger.log(error);
+			cell.setError(error);
+			return null;
+		}
+		if(typeof object_and_rest[1] != 'undefined'){
+			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
+			if (rest_maybe.length>0)
+			{
+				error = "Surplus text when parsing Input, text: " + rest_maybe;
+				Logger.log(error);
+				cell.setError(error);
+			}
+		}
+		return object_and_rest[0];
+	};
+	
+	this.internal_parse_syntax_Input = function(text){
+		var object_and_rest = null;
+		object_and_rest = this.parse_syntax_Input_2(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		object_and_rest = this.parse_syntax_Input_3(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		return null;
+	};
+	
+	this.parse_syntax_Input_2 = function(text){
 		var current = text;
 		var result = [];
-		var object_and_rest = null;object_and_rest = this.internal_parse_syntax_token("no", current);
-	if (object_and_rest===null)
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_InputCategory(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token(";", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_Input(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"Input":result},current];
+	};
+	
+	this.parse_syntax_Input_3 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_InputCategory(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token(";", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"Input":result},current];
+	};
+	
+	this.parse_syntax_InputCategory = function(cell){
+		var object_and_rest = this.internal_parse_syntax_InputCategory(cell.data);
+		var error = null;
+		if (object_and_rest===null){
+			error = "Failed parsing as InputCategory, text: " + cell.data;
+			Logger.log(error);
+			cell.setError(error);
+			return null;
+		}
+		if(typeof object_and_rest[1] != 'undefined'){
+			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
+			if (rest_maybe.length>0)
+			{
+				error = "Surplus text when parsing InputCategory, text: " + rest_maybe;
+				Logger.log(error);
+				cell.setError(error);
+			}
+		}
+		return object_and_rest[0];
+	};
+	
+	this.internal_parse_syntax_InputCategory = function(text){
+		var object_and_rest = null;
+		object_and_rest = this.parse_syntax_InputCategory_4(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		object_and_rest = this.parse_syntax_InputCategory_5(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
 		return null;
-	result.push(object_and_rest[0]);
-	current = object_and_rest[1];	return [{"yes_no":result},current];
-			};	
+	};
+	
+	this.parse_syntax_InputCategory_4 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_IDENTIFIER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token("@", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_INTEGER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token("Hz", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token(":", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_InputComponents(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"InputCategory":result},current];
+	};
+	
+	this.parse_syntax_InputCategory_5 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_IDENTIFIER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token(":", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_InputComponents(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"InputCategory":result},current];
+	};
+	
+	this.parse_syntax_InputComponents = function(cell){
+		var object_and_rest = this.internal_parse_syntax_InputComponents(cell.data);
+		var error = null;
+		if (object_and_rest===null){
+			error = "Failed parsing as InputComponents, text: " + cell.data;
+			Logger.log(error);
+			cell.setError(error);
+			return null;
+		}
+		if(typeof object_and_rest[1] != 'undefined'){
+			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
+			if (rest_maybe.length>0)
+			{
+				error = "Surplus text when parsing InputComponents, text: " + rest_maybe;
+				Logger.log(error);
+				cell.setError(error);
+			}
+		}
+		return object_and_rest[0];
+	};
+	
+	this.internal_parse_syntax_InputComponents = function(text){
+		var object_and_rest = null;
+		object_and_rest = this.parse_syntax_InputComponents_6(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		object_and_rest = this.parse_syntax_InputComponents_7(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		return null;
+	};
+	
+	this.parse_syntax_InputComponents_6 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_IDENTIFIER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token(",", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_InputComponents(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"InputComponents":result},current];
+	};
+	
+	this.parse_syntax_InputComponents_7 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_IDENTIFIER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"InputComponents":result},current];
+	};
+	
+	this.parse_syntax_Condition = function(cell){
+		var object_and_rest = this.internal_parse_syntax_Condition(cell.data);
+		var error = null;
+		if (object_and_rest===null){
+			error = "Failed parsing as Condition, text: " + cell.data;
+			Logger.log(error);
+			cell.setError(error);
+			return null;
+		}
+		if(typeof object_and_rest[1] != 'undefined'){
+			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
+			if (rest_maybe.length>0)
+			{
+				error = "Surplus text when parsing Condition, text: " + rest_maybe;
+				Logger.log(error);
+				cell.setError(error);
+			}
+		}
+		return object_and_rest[0];
+	};
+	
+	this.internal_parse_syntax_Condition = function(text){
+		var object_and_rest = null;
+		object_and_rest = this.parse_syntax_Condition_8(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		object_and_rest = this.parse_syntax_Condition_9(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		object_and_rest = this.parse_syntax_Condition_10(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		return null;
+	};
+	
+	this.parse_syntax_Condition_8 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_Cond(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token("and", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_Condition(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"Condition":result},current];
+	};
+	
+	this.parse_syntax_Condition_9 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_Cond(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token("or", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_Condition(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"Condition":result},current];
+	};
+	
+	this.parse_syntax_Condition_10 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_Cond(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"Condition":result},current];
+	};
+	
+	this.parse_syntax_Cond = function(cell){
+		var object_and_rest = this.internal_parse_syntax_Cond(cell.data);
+		var error = null;
+		if (object_and_rest===null){
+			error = "Failed parsing as Cond, text: " + cell.data;
+			Logger.log(error);
+			cell.setError(error);
+			return null;
+		}
+		if(typeof object_and_rest[1] != 'undefined'){
+			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
+			if (rest_maybe.length>0)
+			{
+				error = "Surplus text when parsing Cond, text: " + rest_maybe;
+				Logger.log(error);
+				cell.setError(error);
+			}
+		}
+		return object_and_rest[0];
+	};
+	
+	this.internal_parse_syntax_Cond = function(text){
+		var object_and_rest = null;
+		object_and_rest = this.parse_syntax_Cond_11(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		object_and_rest = this.parse_syntax_Cond_12(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		return null;
+	};
+	
+	this.parse_syntax_Cond_11 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_BasicCond(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_ByClause(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"Cond":result},current];
+	};
+	
+	this.parse_syntax_Cond_12 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_BasicCond(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"Cond":result},current];
+	};
+	
+	this.parse_syntax_BasicCond = function(cell){
+		var object_and_rest = this.internal_parse_syntax_BasicCond(cell.data);
+		var error = null;
+		if (object_and_rest===null){
+			error = "Failed parsing as BasicCond, text: " + cell.data;
+			Logger.log(error);
+			cell.setError(error);
+			return null;
+		}
+		if(typeof object_and_rest[1] != 'undefined'){
+			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
+			if (rest_maybe.length>0)
+			{
+				error = "Surplus text when parsing BasicCond, text: " + rest_maybe;
+				Logger.log(error);
+				cell.setError(error);
+			}
+		}
+		return object_and_rest[0];
+	};
+	
+	this.internal_parse_syntax_BasicCond = function(text){
+		var object_and_rest = null;
+		object_and_rest = this.parse_syntax_BasicCond_13(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		object_and_rest = this.parse_syntax_BasicCond_14(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		return null;
+	};
+	
+	this.parse_syntax_BasicCond_13 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_IDENTIFIER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token(">", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_IDENTIFIER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"BasicCond":result},current];
+	};
+	
+	this.parse_syntax_BasicCond_14 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_IDENTIFIER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token("=", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_IDENTIFIER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"BasicCond":result},current];
+	};
+	
+	this.parse_syntax_ByClause = function(cell){
+		var object_and_rest = this.internal_parse_syntax_ByClause(cell.data);
+		var error = null;
+		if (object_and_rest===null){
+			error = "Failed parsing as ByClause, text: " + cell.data;
+			Logger.log(error);
+			cell.setError(error);
+			return null;
+		}
+		if(typeof object_and_rest[1] != 'undefined'){
+			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
+			if (rest_maybe.length>0)
+			{
+				error = "Surplus text when parsing ByClause, text: " + rest_maybe;
+				Logger.log(error);
+				cell.setError(error);
+			}
+		}
+		return object_and_rest[0];
+	};
+	
+	this.internal_parse_syntax_ByClause = function(text){
+		var object_and_rest = null;
+		object_and_rest = this.parse_syntax_ByClause_15(text);
+		if (object_and_rest!==null)
+			return object_and_rest;
+		return null;
+	};
+	
+	this.parse_syntax_ByClause_15 = function(text){
+		var current = text;
+		var result = [];
+		var object_and_rest = null;
+	
+		object_and_rest = this.internal_parse_syntax_token("by", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_INTEGER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token("%", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token("for", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_INTEGER(current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		object_and_rest = this.internal_parse_syntax_token("sec", current);
+		if (object_and_rest===null)
+			return null;
+		result.push(object_and_rest[0]);
+		current = object_and_rest[1];
+	
+		return [{"ByClause":result},current];
+	};
 
 	//helper function
 	

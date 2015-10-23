@@ -40,11 +40,14 @@ function GenericParserHelper(spreadsheet){
   };
 
   this.parse_syntax_IDENTIFIER = function(cell){
-
+    
     var result = this.internal_parse_syntax_IDENTIFIER(cell.data);
-    if (result!==null && result[1].lenght===0)
-            return result[0];
-    Logger.log('parse error: illegal identifier ' + cell.data);
+    if(result!==null && result[1].length===0)
+        return result[0];
+    
+    var error = 'parse error: illegal identifier ' + cell.data;
+    Logger.log(error);
+    cell.setError(error);
   };
   
   this.parse_syntax_STRING = function(cell){
@@ -53,7 +56,7 @@ function GenericParserHelper(spreadsheet){
   };
 
   this.parse_syntax_INTEGER = function(cell){
-    var result = this.internal_parse_syntax_INTEGER(cell.data)[0];
+    var result = this.internal_parse_syntax_INTEGER(cell.data);
     if(result!==null)
         return result[0];
     var error = 'parse error: illegal integer ' + cell.data;
@@ -70,20 +73,25 @@ function GenericParserHelper(spreadsheet){
   this.parse_syntax_token = function(token,string){
     
     var result = this.internal_parse_syntax_token(token);
-    if (result!==null)
-      return result[0];
-    var error = 'parse error: expected token ' + token + ' but got ' + string;
-    Logger.log(error);
-    cell.setError(error);
+    if (result===null){  
+      var error = 'parse error: expected token ' + token + ' but got ' + string;
+      Logger.log(error);
+      cell.setError(error);
+    }
+    return result[0];
   };
 
   this.internal_parse_syntax_IDENTIFIER = function(text){
-
-    var m=this.regexp_parse_identifier.match(text);  
-    if (m)
+    var re =/[A-Za-z_][A-Za-z_0-9]*/g;
+    var m=text.match(re);  
+    //Logger.log("debug: IDENTIFIER " + text + " -> " + m);
+    if (m !== null)
     {
-        value=m.group(0);
-        return [{'IDENTIFIER':value},text[value.lenght]];
+        value=m;
+        m = text.replace(/^\s*/g, ""); //lstrip();
+        m = m.substring(value[0].length);
+        //Logger.log("debug: IDENTIFIER rest '" + m + "' len " + m.length);
+        return [{'IDENTIFIER':value},m];
     }
 
     return null;
@@ -95,11 +103,18 @@ function GenericParserHelper(spreadsheet){
   };
 
   this.internal_parse_syntax_INTEGER = function(text){
-    var res = parseInt(text);
-    if(res.isNaN)
-        return null;
-        
-    return [{'INTEGER':res},''];
+    
+    var int = parseInt(text);
+    if(isNaN(int))
+    {
+      //Logger.log("!!!! "+text + " is not an integer");
+      return null;
+    } 
+    var rest = text.toString();
+    rest = rest.replace(/^\s*/g, ""); //lstrip();
+    rest = rest.substring((int.toString()).length);
+    
+    return [{'INTEGER':int},rest];
   };
 /*
   this.internal_parse_syntax_token = function(token){
@@ -110,9 +125,9 @@ function GenericParserHelper(spreadsheet){
   this.internal_parse_syntax_token = function(token,string){    
     if(string !== null){
       //Logger.log('Debug: token "' + token + '" string: "' + string + '"');
-      var text = String(string).replace(/^\s*/g, ""); //lstrip();
+      var text = string.replace(/^\s*/g, ""); //lstrip();
       if (text.startsWith(token))
-        return [{'TOKEN':token},text[token.length]];
+        return [{'TOKEN':token},text.substring(token.length)];
     }
     return null;
   };

@@ -3,9 +3,10 @@ var s = new Spreadsheet;  //global variable storing an abstract representation o
 //called every time the sheet is oppened or refreshed
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
-  ui.createMenu('Validate Menu')
-  .addItem('Validate worksheet', 'menuValidateWorksheet')
-  .addItem('Clear worksheet', 'menuClearFormatSheet')
+  ui.createMenu('Worksheet validation')
+  .addItem('Validate current worksheet', 'menuValidateWorksheet')
+  //.addItem('Clear worksheet', 'menuClearFormatSheet')
+  .addItem('Restore worksheets', 'restoreWorksheets')
   .addToUi();
 }
 
