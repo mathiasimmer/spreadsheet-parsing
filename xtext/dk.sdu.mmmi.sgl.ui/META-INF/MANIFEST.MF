@@ -22,5 +22,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: dk.sdu.mmmi.sgl.ui.quickfix,
  dk.sdu.mmmi.sgl.ui.contentassist,
  dk.sdu.mmmi.sgl.ui.contentassist.antlr,
- dk.sdu.mmmi.sgl.ui.internal
+ dk.sdu.mmmi.sgl.ui.internal,
+ dk.sdu.mmmi.sgl.ui.contentassist.antlr.internal
 Bundle-Activator: dk.sdu.mmmi.sgl.ui.internal.SpreadsheetGrammarLanguageActivator
