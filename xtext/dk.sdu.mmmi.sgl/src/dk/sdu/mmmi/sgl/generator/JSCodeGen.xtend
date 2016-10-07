@@ -126,7 +126,8 @@ class JSCodeGen extends BaseCodeGen {
 			var fn_text = part.generateSyntaxName
 			if( fn_text.startsWith("token("))
 			{
-				fn_text = fn_text.replace(")","")
+				//fn_text = fn_text.replaceFirst("\\)","")
+				fn_text = fn_text.replaceAll("\\)$","")
 				fn_text += ", current)"
 			}
 			else

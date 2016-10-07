@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.SyntaxImpl#isIs_id <em>Is id</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.SyntaxImpl#isIs_string <em>Is string</em>}</li>
@@ -27,7 +28,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.SyntaxImpl#getToken <em>Token</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.SyntaxImpl#getRule <em>Rule</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

@@ -10,11 +10,11 @@ package dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.RowSpec#getHeader <em>Header</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.RowSpec#getSyntax <em>Syntax</em>}</li>
  * </ul>
- * </p>
  *
  * @see dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.SpreadsheetGrammarLanguagePackage#getRowSpec()
  * @model

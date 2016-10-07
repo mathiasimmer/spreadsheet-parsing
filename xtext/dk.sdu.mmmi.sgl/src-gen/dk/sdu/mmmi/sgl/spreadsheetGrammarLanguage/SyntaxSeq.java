@@ -13,10 +13,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.SyntaxSeq#getParts <em>Parts</em>}</li>
  * </ul>
- * </p>
  *
  * @see dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.SpreadsheetGrammarLanguagePackage#getSyntaxSeq()
  * @model

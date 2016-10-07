@@ -20,11 +20,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.RowSpecImpl#getHeader <em>Header</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.RowSpecImpl#getSyntax <em>Syntax</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

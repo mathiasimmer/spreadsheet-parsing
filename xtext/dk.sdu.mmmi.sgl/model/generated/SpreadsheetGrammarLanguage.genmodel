@@ -3,9 +3,9 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/dk.sdu.mmmi.sgl/src-gen" editDirectory="/dk.sdu.mmmi.sgl.edit/src"
     editorDirectory="/dk.sdu.mmmi.sgl.editor/src" modelPluginID="dk.sdu.mmmi.sgl"
     forceOverwrite="true" modelName="SpreadsheetGrammarLanguage" updateClasspath="false"
-    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" complianceLevel="5.0"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" complianceLevel="6.0"
     copyrightFields="false" editPluginID="dk.sdu.mmmi.sgl.edit" editorPluginID="dk.sdu.mmmi.sgl.editor"
-    runtimeVersion="2.10">
+    runtimeVersion="2.11">
   <genPackages prefix="SpreadsheetGrammarLanguage" basePackage="dk.sdu.mmmi.sgl" disposableProviderFactory="true"
       fileExtensions="sgl" ecorePackage="SpreadsheetGrammarLanguage.ecore#/">
     <genClasses ecoreClass="SpreadsheetGrammarLanguage.ecore#//Grammar">

@@ -21,12 +21,12 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.ColumnImpl#getName <em>Name</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.ColumnImpl#isMultiple <em>Multiple</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.ColumnImpl#getDef <em>Def</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

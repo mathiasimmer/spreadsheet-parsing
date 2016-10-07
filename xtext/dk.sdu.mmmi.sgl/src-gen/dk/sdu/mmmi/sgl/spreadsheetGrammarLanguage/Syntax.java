@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Syntax#isIs_id <em>Is id</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Syntax#isIs_string <em>Is string</em>}</li>
@@ -18,7 +19,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Syntax#getToken <em>Token</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.Syntax#getRule <em>Rule</em>}</li>
  * </ul>
- * </p>
  *
  * @see dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.SpreadsheetGrammarLanguagePackage#getSyntax()
  * @model

@@ -10,10 +10,10 @@ package dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.BlockSpec#getKind <em>Kind</em>}</li>
  * </ul>
- * </p>
  *
  * @see dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.SpreadsheetGrammarLanguagePackage#getBlockSpec()
  * @model

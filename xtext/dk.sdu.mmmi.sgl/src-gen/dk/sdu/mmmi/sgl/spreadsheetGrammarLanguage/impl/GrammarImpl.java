@@ -29,12 +29,12 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.GrammarImpl#getName <em>Name</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.GrammarImpl#getRoot <em>Root</em>}</li>
  *   <li>{@link dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl.GrammarImpl#getElements <em>Elements</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
