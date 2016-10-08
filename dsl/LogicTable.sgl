@@ -30,7 +30,7 @@ Use case #,
 language LogicTable: Forms;
 
 block Forms {
-  case = column "Use case #": STRING;
+  case = column "Use case #": STR;
   table* = block Table;
 }
 
@@ -53,20 +53,20 @@ block Table {
   beep = column "Beep": rule BoolBlink;
   arm_power = column "Arm power": rule Bool;
   decompress = column "Decompress": rule Bool;
-  state ?= column "State": STRING;
-  use_case = column "Use case description": STRING;
+  state ?= column "State": STR;
+  use_case = column "Use case description": STR;
 }
 
 rule Bool:
-  token "0" | token "1"
+  @"0" | @"1"
 ;
 
 rule BoolAny:
-   STRING
+   STR
   //token "*=0" | token "*" | token "x" | rule Bool 
 ;
 
 
 rule BoolBlink:
-  token "1s" | token ".5s" | rule Bool   
+  @"1s" | @".5s" | rule Bool   
 ;
