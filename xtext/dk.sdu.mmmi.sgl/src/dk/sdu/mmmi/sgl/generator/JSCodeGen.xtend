@@ -18,25 +18,25 @@ class JSCodeGen extends BaseCodeGen {
 	}
 	
 	def generate(/*Grammar grammar*/) 
-	//'''test for JS file Â«grammar.nameÂ»'''
+	//'''test for JS file «grammar.name»'''
 
 	'''	
 	
-	//ParseÂ«grammar.nameÂ» object - inherits from GenericParserHelper
+	//Parse«grammar.name» object - inherits from GenericParserHelper
 
-	ParseÂ«grammar.nameÂ».prototype = Object.create(GenericParserHelper.prototype); // keeps the proto clean
-	ParseÂ«grammar.nameÂ».prototype.constructor = ParseÂ«grammar.nameÂ»;              // repair the inherited constructor
-	function ParseÂ«grammar.nameÂ»(spreadsheet){
+	Parse«grammar.name».prototype = Object.create(GenericParserHelper.prototype); // keeps the proto clean
+	Parse«grammar.name».prototype.constructor = Parse«grammar.name»;              // repair the inherited constructor
+	function Parse«grammar.name»(spreadsheet){
 	    GenericParserHelper.call(this,spreadsheet);
 		//Logger.log("Empty constructor");
 	
 		this.matchColumns = function(columnHeaders){
-			return are_same(columnHeaders,[Â«FOR h:grammar.computeHeaders SEPARATOR ","Â»"Â«hÂ»"Â«ENDFORÂ»]);
+			return are_same(columnHeaders,[«FOR h:grammar.computeHeaders SEPARATOR ","»"«h»"«ENDFOR»]);
 		};
 	
 
 		this.getColumnHeaders = function(){
-			return [Â«FOR h:grammar.computeHeaders SEPARATOR ","Â»"Â«hÂ»"Â«ENDFORÂ»];
+			return [«FOR h:grammar.computeHeaders SEPARATOR ","»"«h»"«ENDFOR»];
 		};
 		
 		this.parseBlock = function(row,column,height){
@@ -45,7 +45,7 @@ class JSCodeGen extends BaseCodeGen {
 			if(this.validRow(row) && this.validCol(column) && this.validRow(row + height-1))
 			{
 				while (relativeRow<height){
-					var increment_and_object = this.parse_Â«grammar.root.nameÂ»(row+relativeRow, column, row+height);
+					var increment_and_object = this.parse_«grammar.root.name»(row+relativeRow, column, row+height);
 					results.push(increment_and_object[1]);
 					relativeRow += increment_and_object[0];
 				}
@@ -54,9 +54,9 @@ class JSCodeGen extends BaseCodeGen {
 			else
 				return null;
 		};
-		Â«FOR e:grammar.elementsÂ»
-		Â«e.genParserÂ»
-		Â«ENDFORÂ»
+		«FOR e:grammar.elements»
+		«e.genParser»
+		«ENDFOR»
 	
 		//helper function
 		
@@ -76,11 +76,11 @@ class JSCodeGen extends BaseCodeGen {
 	''' 
 	def dispatch genParser(Rule rule) '''
 	
-	this.parse_syntax_Â«rule.nameÂ» = function(cell){
-		var object_and_rest = this.internal_parse_syntax_Â«rule.nameÂ»(cell.data);
+	this.parse_syntax_«rule.name» = function(cell){
+		var object_and_rest = this.internal_parse_syntax_«rule.name»(cell.data);
 		var error = null;
 		if (object_and_rest===null){
-			error = "Failed parsing as Â«rule.nameÂ», text: " + cell.data;
+			error = "Failed parsing as «rule.name», text: " + cell.data;
 			Logger.log(error);
 			cell.setError(error);
 			return null;
@@ -89,7 +89,7 @@ class JSCodeGen extends BaseCodeGen {
 			rest_maybe = String(object_and_rest[1]).replace(/^\s*/g, ""); //lstrip()
 			if (rest_maybe.length>0)
 			{
-				error = "Surplus text when parsing Â«rule.nameÂ», text: " + rest_maybe;
+				error = "Surplus text when parsing «rule.name», text: " + rest_maybe;
 				Logger.log(error);
 				cell.setError(error);
 			}
@@ -97,18 +97,18 @@ class JSCodeGen extends BaseCodeGen {
 		return object_and_rest[0];
 	};
 	
-	this.internal_parse_syntax_Â«rule.nameÂ» = function(text){
+	this.internal_parse_syntax_«rule.name» = function(text){
 		var object_and_rest = null;
-		Â«FOR a:rule.alternativesÂ»
-		object_and_rest = this.parse_syntax_Â«rule.nameÂ»_Â«a.uniqueCodeÂ»(text);
+		«FOR a:rule.alternatives»
+		object_and_rest = this.parse_syntax_«rule.name»_«a.uniqueCode»(text);
 		if (object_and_rest!==null)
 			return object_and_rest;
-		Â«ENDFORÂ»
+		«ENDFOR»
 		return null;
 	};
-	Â«FOR a:rule.alternativesÂ»
-	Â«a.parts.genInternalParser(rule.name+"_"+a.uniqueCode,rule.name)Â»	
-	Â«ENDFORÂ»
+	«FOR a:rule.alternatives»
+	«a.parts.genInternalParser(rule.name+"_"+a.uniqueCode,rule.name)»	
+	«ENDFOR»
 	'''
 	
 	def genInternalParser(EList<Syntax> list, String name, String dataname) 
@@ -116,7 +116,7 @@ class JSCodeGen extends BaseCodeGen {
 		var code_gen=
 		'''	
 		
-		this.parse_syntax_Â«nameÂ» = function(text){
+		this.parse_syntax_«name» = function(text){
 			var current = text;
 			var result = [];
 			var object_and_rest = null;
@@ -137,7 +137,7 @@ class JSCodeGen extends BaseCodeGen {
 		code_gen += 
 		'''	
 		
-			object_and_rest = this.internal_parse_syntax_Â«fn_textÂ»;
+			object_and_rest = this.internal_parse_syntax_«fn_text»;
 			if (object_and_rest===null)
 				return null;
 			result.push(object_and_rest[0]);
@@ -147,7 +147,7 @@ class JSCodeGen extends BaseCodeGen {
 		code_gen +=
 		'''
 		
-			return [{"Â«datanameÂ»":result},current];
+			return [{"«dataname»":result},current];
 		};
 		'''
 		
@@ -160,51 +160,51 @@ class JSCodeGen extends BaseCodeGen {
 	
 	def dispatch genParser(Block block) '''
 	
-	this.parse_Â«block.nameÂ» = function(row,column,max_row){
+	this.parse_«block.name» = function(row,column,max_row){
 		var column_offset = 0;
 		var result_row_increment = 1;
 		var result_object = {};
 		var current_column = 0;
-		Â«FOR c:block.columnsÂ»
-		// Column Â«c.nameÂ»
+		«FOR c:block.columns»
+		// Column «c.name»
 		current_column = column+column_offset;
-		Â«IF c.multipleÂ»
-		Â«c.def.genParserMultiple(c.name)Â»
-		Â«ELSEÂ»
-		Â«c.def.genParserSingle(c.name)Â»
-		Â«ENDIFÂ»
-		result_object.Â«c.nameÂ» = value_Â«c.nameÂ»;
+		«IF c.multiple»
+		«c.def.genParserMultiple(c.name)»
+		«ELSE»
+		«c.def.genParserSingle(c.name)»
+		«ENDIF»
+		result_object.«c.name» = value_«c.name»;
 		column_offset ++;
-		Â«ENDFORÂ»
+		«ENDFOR»
 		return [result_row_increment,result_object];
 	};
 	'''
 	
 	def dispatch genParserMultiple(MandatoryColumn col, String name) '''
-	var value_Â«nameÂ» = [];
-	Â«col.spec.genParserMultipleBody(name)Â»
+	var value_«name» = [];
+	«col.spec.genParserMultipleBody(name)»
 	'''
 	
 	def dispatch genParserMultiple(OptionalColumn col, String name) '''
-	var value_Â«nameÂ» = [];
+	var value_«name» = [];
 	if (!this.emptyCell(row,current_column)){
-		Â«col.spec.genParserMultipleBody(name)Â»
+		«col.spec.genParserMultipleBody(name)»
 	}
 	'''
 
 	def dispatch genParserSingle(MandatoryColumn col, String name) '''
-	var value_Â«nameÂ» = Â«col.spec.genParserSingleBodyÂ»
+	var value_«name» = «col.spec.genParserSingleBody»
 	'''
 	
 	def dispatch genParserSingle(OptionalColumn col, String name) '''
 	if (this.emptyCell(row,current_column))
-		value_Â«nameÂ» = null;
+		value_«name» = null;
 	else
-		value_Â«nameÂ» = Â«col.spec.genParserSingleBodyÂ»
+		value_«name» = «col.spec.genParserSingleBody»
 	'''
 
 	def dispatch genParserSingleBody(RowSpec spec) '''
-	this.parse_syntax_Â«spec.syntax.generateSyntaxNameÂ»(this.getCell(row,current_column));
+	this.parse_syntax_«spec.syntax.generateSyntaxName»(this.getCell(row,current_column));
 	'''
 
 	
@@ -217,7 +217,7 @@ class JSCodeGen extends BaseCodeGen {
 	var relativeRow = 0;
 	while (true)
 	{
-		value_Â«nameÂ».push(this.parse_syntax_Â«spec.syntax.generateSyntaxNameÂ»(this.getCell(row+relativeRow,current_column));
+		value_«name».push(this.parse_syntax_«spec.syntax.generateSyntaxName»(this.getCell(row+relativeRow,current_column));
 		relativeRow += 1;
 		if (!this.emptyCell(row+relativeRow,current_column-1))
 			break;
@@ -231,9 +231,9 @@ class JSCodeGen extends BaseCodeGen {
 	{
 		if (row+relativeRow>=max_row)
 			break;
-		var increment_and_object = this.parse_Â«spec.kind.nameÂ»(row+relativeRow,current_column,max_row);
+		var increment_and_object = this.parse_«spec.kind.name»(row+relativeRow,current_column,max_row);
 		relativeRow += increment_and_object[0];
-		value_Â«nameÂ».push(increment_and_object[1]);
+		value_«name».push(increment_and_object[1]);
 		if (!this.validRow(row+relativeRow) || !this.emptyCell(row+relativeRow,current_column-1))
 			break;
 	}

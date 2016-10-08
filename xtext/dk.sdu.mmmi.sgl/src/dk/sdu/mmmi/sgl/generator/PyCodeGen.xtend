@@ -19,65 +19,65 @@ class PyCodeGen extends BaseCodeGen {
 	
 	def generate(/*Grammar grammar*/) '''
 	from spreadsheet_parser import *
-	class ParseÂ«grammar.nameÂ»(GenericParserHelper):
+	class Parse«grammar.name»(GenericParserHelper):
 	
 		def __init__(self, spreadsheet):
 			GenericParserHelper.__init__(self,spreadsheet)
 	
 		def matchColumns(self,columnHeaders):
-			return columnHeaders==[Â«FOR h:grammar.computeHeaders SEPARATOR ","Â»"Â«hÂ»"Â«ENDFORÂ»]
+			return columnHeaders==[«FOR h:grammar.computeHeaders SEPARATOR ","»"«h»"«ENDFOR»]
 	
 		def getColumnHeaders(self):
-			return [Â«FOR h:grammar.computeHeaders SEPARATOR ","Â»"Â«hÂ»"Â«ENDFORÂ»]
+			return [«FOR h:grammar.computeHeaders SEPARATOR ","»"«h»"«ENDFOR»]
 	
 		def parseBlock(self,columnHeaders,row,column,height):
 			results = []
 			relativeRow = 0
 			while relativeRow<height:
-				increment_and_object = self.parse_Â«grammar.root.nameÂ»(row+relativeRow,column,row+height)
+				increment_and_object = self.parse_«grammar.root.name»(row+relativeRow,column,row+height)
 				results.append(increment_and_object[1])
 				relativeRow += increment_and_object[0]
 			return results
-		Â«FOR e:grammar.elementsÂ»
-		Â«e.genParserÂ»
-		Â«ENDFORÂ»
+		«FOR e:grammar.elements»
+		«e.genParser»
+		«ENDFOR»
 	'''
 	def dispatch genParser(Rule rule) '''
 	
-	def parse_syntax_Â«rule.nameÂ»(self,text):
-		object_and_rest = self.internal_parse_syntax_Â«rule.nameÂ»(text)
+	def parse_syntax_«rule.name»(self,text):
+		object_and_rest = self.internal_parse_syntax_«rule.name»(text)
 		if object_and_rest==None:
-			raise Exception("Failed parsing as Â«rule.nameÂ», text: "+text)
+			raise Exception("Failed parsing as «rule.name», text: "+text)
 		rest_maybe = object_and_rest[1].lstrip()
 		if len(rest_maybe)>0:
-			raise Exception("Surplus text when parsing Â«rule.nameÂ», text: "+rest_maybe)
+			raise Exception("Surplus text when parsing «rule.name», text: "+rest_maybe)
 		return object_and_rest[0]
 	
-	def internal_parse_syntax_Â«rule.nameÂ»(self,text):
-		Â«FOR a:rule.alternativesÂ»
-		object_and_rest = self.parse_syntax_Â«rule.nameÂ»_Â«a.uniqueCodeÂ»(text)
+	def internal_parse_syntax_«rule.name»(self,text):
+		«FOR a:rule.alternatives»
+		object_and_rest = self.parse_syntax_«rule.name»_«a.uniqueCode»(text)
 		if object_and_rest!=None:
 			return object_and_rest
-		Â«ENDFORÂ»
+		«ENDFOR»
 		return None
-	Â«FOR a:rule.alternativesÂ»
-	Â«a.parts.genInternalParser(rule.name+"_"+a.uniqueCode,rule.name)Â»	
-	Â«ENDFORÂ»
+	«FOR a:rule.alternatives»
+	«a.parts.genInternalParser(rule.name+"_"+a.uniqueCode,rule.name)»	
+	«ENDFOR»
 	'''
 	
 	def genInternalParser(EList<Syntax> list, String name, String dataname) '''
 	
-	def parse_syntax_Â«nameÂ»(self,text):
+	def parse_syntax_«name»(self,text):
 		current = text
 		result = []
-		Â«FOR part:listÂ»
-		object_and_rest = self.internal_parse_syntax_Â«part.generateSyntaxNameÂ»(current)
+		«FOR part:list»
+		object_and_rest = self.internal_parse_syntax_«part.generateSyntaxName»(current)
 		if object_and_rest==None:
 			return None
 		result.append(object_and_rest[0])
 		current = object_and_rest[1]
-		Â«ENDFORÂ»
-		return ({"Â«datanameÂ»":result},current)
+		«ENDFOR»
+		return ({"«dataname»":result},current)
 	'''
 	
 	//
@@ -86,48 +86,48 @@ class PyCodeGen extends BaseCodeGen {
 	
 	def dispatch genParser(Block block) '''
 	
-	def parse_Â«block.nameÂ»(self,row,column,max_row):
+	def parse_«block.name»(self,row,column,max_row):
 		column_offset = 0
 		result_row_increment = 1
 		result_object = {}
-		Â«FOR c:block.columnsÂ»
-		# Column Â«c.nameÂ»
+		«FOR c:block.columns»
+		# Column «c.name»
 		current_column = column+column_offset
-		Â«IF c.multipleÂ»
-		Â«c.def.genParserMultiple(c.name)Â»
-		Â«ELSEÂ»
-		Â«c.def.genParserSingle(c.name)Â»
-		Â«ENDIFÂ»
-		result_object["Â«c.nameÂ»"] = value_Â«c.nameÂ»
+		«IF c.multiple»
+		«c.def.genParserMultiple(c.name)»
+		«ELSE»
+		«c.def.genParserSingle(c.name)»
+		«ENDIF»
+		result_object["«c.name»"] = value_«c.name»
 		column_offset += 1
-		Â«ENDFORÂ»
+		«ENDFOR»
 		return (result_row_increment,result_object)
 	'''
 	
 	def dispatch genParserMultiple(MandatoryColumn col, String name) '''
-	value_Â«nameÂ» = []
-	Â«col.spec.genParserMultipleBody(name)Â»
+	value_«name» = []
+	«col.spec.genParserMultipleBody(name)»
 	'''
 	
 	def dispatch genParserMultiple(OptionalColumn col, String name) '''
-	value_Â«nameÂ» = []
+	value_«name» = []
 	if not self.emptyCell(row,current_column):
-		Â«col.spec.genParserMultipleBody(name)Â»
+		«col.spec.genParserMultipleBody(name)»
 	'''
 
 	def dispatch genParserSingle(MandatoryColumn col, String name) '''
-	value_Â«nameÂ» = Â«col.spec.genParserSingleBodyÂ»
+	value_«name» = «col.spec.genParserSingleBody»
 	'''
 	
 	def dispatch genParserSingle(OptionalColumn col, String name) '''
 	if self.emptyCell(row,current_column):
-		value_Â«nameÂ» = None
+		value_«name» = None
 	else:
-		value_Â«nameÂ» = Â«col.spec.genParserSingleBodyÂ»
+		value_«name» = «col.spec.genParserSingleBody»
 	'''
 
 	def dispatch genParserSingleBody(RowSpec spec) '''
-	self.parse_syntax_Â«spec.syntax.generateSyntaxNameÂ»(self.getCell(row,current_column))
+	self.parse_syntax_«spec.syntax.generateSyntaxName»(self.getCell(row,current_column))
 	'''
 
 	
@@ -138,7 +138,7 @@ class PyCodeGen extends BaseCodeGen {
 	def dispatch genParserMultipleBody(RowSpec spec, String name) '''
 	relativeRow = 0
 	while True:
-		value_Â«nameÂ».append(self.parse_syntax_Â«spec.syntax.generateSyntaxNameÂ»(self.getCell(row+relativeRow,current_column))
+		value_«name».append(self.parse_syntax_«spec.syntax.generateSyntaxName»(self.getCell(row+relativeRow,current_column))
 		relativeRow += 1
 		if not self.emptyCell(row+relativeRow,current_column-1):
 			break
@@ -150,9 +150,9 @@ class PyCodeGen extends BaseCodeGen {
 	while True:
 		if row+relativeRow>=max_row:
 			break
-		increment_and_object = self.parse_Â«spec.kind.nameÂ»(row+relativeRow,current_column,max_row)
+		increment_and_object = self.parse_«spec.kind.name»(row+relativeRow,current_column,max_row)
 		relativeRow += increment_and_object[0]
-		value_Â«nameÂ».append(increment_and_object[1])
+		value_«name».append(increment_and_object[1])
 		if not self.emptyCell(row+relativeRow,current_column-1):
 			break
 	result_row_increment = max(result_row_increment,relativeRow)

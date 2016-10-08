@@ -5,32 +5,25 @@ Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: dk.sdu.mmmi.sgl; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.xtext;visibility:=reexport,
- org.eclipse.xtext.xbase;resolution:=optional;visibility:=reexport,
- org.eclipse.xtext.generator;resolution:=optional,
- org.apache.commons.logging;bundle-version="1.0.4";resolution:=optional,
- org.eclipse.emf.codegen.ecore;resolution:=optional,
- org.eclipse.emf.mwe.utils;resolution:=optional,
- org.eclipse.emf.mwe2.launch;resolution:=optional,
- org.eclipse.xtext.util,
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
  org.eclipse.emf.ecore,
- org.eclipse.emf.common,
  org.eclipse.xtext.xbase.lib,
  org.antlr.runtime,
- org.eclipse.xtext.common.types,
- org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
- org.eclipse.equinox.common;bundle-version="3.7.0"
-Import-Package: org.apache.log4j
+ org.eclipse.xtext.util,
+ org.eclipse.xtend.lib,
+ org.eclipse.emf.common
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: dk.sdu.mmmi.sgl,
- dk.sdu.mmmi.sgl.services,
+Export-Package: dk.sdu.mmmi.sgl.serializer,
  dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage,
- dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl,
- dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.util,
- dk.sdu.mmmi.sgl.serializer,
- dk.sdu.mmmi.sgl.parser.antlr,
+ dk.sdu.mmmi.sgl.generator,
  dk.sdu.mmmi.sgl.parser.antlr.internal,
  dk.sdu.mmmi.sgl.validation,
  dk.sdu.mmmi.sgl.scoping,
- dk.sdu.mmmi.sgl.generator,
- dk.sdu.mmmi.sgl.formatting
+ dk.sdu.mmmi.sgl.services,
+ dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.util,
+ dk.sdu.mmmi.sgl.spreadsheetGrammarLanguage.impl,
+ dk.sdu.mmmi.sgl,
+ dk.sdu.mmmi.sgl.parser.antlr
+Import-Package: org.apache.log4j
