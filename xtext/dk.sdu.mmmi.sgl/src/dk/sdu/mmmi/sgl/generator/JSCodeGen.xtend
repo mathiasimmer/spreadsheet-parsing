@@ -113,12 +113,20 @@ class JSCodeGen extends BaseCodeGen {
 	
 	def genInternalParser(EList<Syntax> list, String name, String dataname) 
 	{
+		var isSingle = list.length == 1;
+		var result = ""
+		if(isSingle){
+			result += "var result = null;"
+		} else {
+			result += "var result = [];"
+		}
+
 		var code_gen=
 		'''	
 		
 		this.parse_syntax_«name» = function(text){
 			var current = text;
-			var result = [];
+			«result»
 			var object_and_rest = null;
 		'''
 		for (part:list)
@@ -133,14 +141,20 @@ class JSCodeGen extends BaseCodeGen {
 			else
 				fn_text += "(current)"
 		
-		
+		var returnResult = "";
+		if(isSingle){
+			returnResult += "result = object_and_rest[0]";
+		} else {
+			returnResult += "result.push(object_and_rest[0]);";
+		}
+				
 		code_gen += 
 		'''	
 		
 			object_and_rest = this.internal_parse_syntax_«fn_text»;
 			if (object_and_rest===null)
 				return null;
-			result.push(object_and_rest[0]);
+			«returnResult»
 			current = object_and_rest[1];
 		'''
 		}
