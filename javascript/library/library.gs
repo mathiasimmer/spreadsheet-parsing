@@ -71,21 +71,21 @@ function Cell(row, column, cell_type_name, data, data_type, fn){
 
   
   this.isEmpty = function(){
-    if (this.cell_type === "empty")
+    if (this.cell_type_name === "empty")
       return true;
     else
       return false;
   };
   
     this.isHeader = function(){
-        if  (this.cell_type === "header")
+        if  (this.cell_type_name === "header")
             return true;
         else
             return false;
     };
     
     this.isData = function(){
-        if  (this.cell_type === "data")
+        if  (this.cell_type_name === "data")
             return true;
         else
             return false;
