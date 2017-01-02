@@ -1,0 +1,74 @@
+function doGenerate(content, destination) {
+   log.info("doGenerate");
+   for(var i = 0 ; i < content.length; i++){
+    var output = compileForm(content[i],i);
+    destination.generateFile('dk/sdu/mmmi/Form'+i+'.java', output);
+   }
+}
+
+handlers = {
+    null: function(node){
+        return "";
+    },
+    "Add": function(node){
+        res = "";
+        for(var i in node){
+            res += dispatch(handlers, node[i]);
+        }
+        return res;
+    },
+    "Sub": function(node){
+        res = "";
+        for(var i in node){
+            res += dispatch(handlers, node[i]);
+        }
+        return res;
+    }
+};
+
+
+function compileForm(form, i){
+
+    return `package dk.sdu.mmmi;
+import java.util.ArrayList;
+import java.util.List;
+import questionare.Form;
+import questionare.Question;
+
+
+public class Form${i} {
+    
+    private Form form;
+
+    public Form${i}() {
+        Question q;
+        
+        form = new Form();
+        form.setName("${dispatch(handlers,form.name)}");
+        ${compileQuestions(form.questions)}
+    }
+
+    public Form getForm() {
+        return form;
+    }
+}`;
+    
+}
+function compileQuestions(questions){
+    
+    var java = '';
+    for(var i in questions){
+        var q = questions[i];
+        java += `
+        q = new Question();
+        q.setName("${dispatch(handlers,q.name)}");
+        q.setQuestion("${dispatch(handlers,q.question)}");
+        q.setType("${dispatch(handlers,q.type)}");
+        q.setValue("${dispatch(handlers,q.value)}");
+        q.setCondition("${dispatch(handlers,q.condition)}");
+        form.getQuestions().add(q);
+        `;
+    }
+    
+    return java;
+}      

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <script type="text/javascript">
+    <?!= code ?>
+
+      var log = new Proxy({}, {
+        get(target, name) {
+          return function() {
+            message = {
+              action: "log",
+              method: name,
+              args: arguments
+            }
+            parent.postMessage(JSON.stringify(message), "*");
+          }
+        }
+      });
+    window.onerror = function(error, url, line) {
+      log.error(error);
+    };
+
+
+    function dispatch(handlers, node) {
+      if (node === null) {
+        if (typeof handlers[null] != "undefined") {
+          return handlers[null](node);
+        }
+      } else if (typeof node === "object") {
+        var keys = Object.keys(node);
+        if (keys.length == 1) {
+          var key = keys[0];
+          var handler = handlers[key];
+
+          if (typeof handler != "undefined") {
+            return handler(node[key]);
+          }
+          try {
+            return dispatch(handlers, node[key]);
+          } catch (e) {
+            log.error("Missing handler for " + key);
+          }
+        } else if (keys.length > 1) {
+          throw "Can't handle multi-key object"
+        }
+      }
+
+      return node;
+    }
+
+    function onLoad() {
+      var destination = new Destination();
+      var content = <?!= content ?> ;
+      try {
+        doGenerate(content, destination);
+      } catch (ex) {
+        log.error(ex.message);
+      }
+      if (destination.trigged) {
+        message = {
+          action: "generate",
+          files: destination.files
+        }
+        parent.postMessage(JSON.stringify(message), "*");
+      }
+
+      message = {
+        action: "completed"
+      }
+      parent.postMessage(JSON.stringify(message), "*");
+
+    }
+    
+    var Destination = function() {
+      this.files = {};
+      this.triggered = false;
+      this.generateFile = function(file, content) {
+        this.trigged = true;
+        this.files[file] = content;
+      }
+    }
+  </script>
+  <title></title>
+</head>
+<body onload="onLoad()">
+</body>
+</html>

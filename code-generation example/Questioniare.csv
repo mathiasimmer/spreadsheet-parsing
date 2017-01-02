@@ -1,0 +1,9 @@
+,,,,,,
+,Form,Name,Question,Type,Value,Condition
+,HouseOwning,hasSoldHouse,Did you sell a house in 2010?,boolean,,
+,,hasBoughtHouse,Did you buy a house in 2010?,boolean,FALSE,
+,,hasMaintLoan,Did you enter a loan for maintenance/reconstruction?,boolean,TRUE,
+,,sellingPrice,Price the house was sold for:,money,200000,hasSoldHouse
+,,privateDebt,Private debts for the sold house:,money,50000,hasSoldHouse
+,,valueResidue,Value residue:,money,( sellingPrice - privateDebt ),hasSoldHouse
+,CarOwning,Test,Example with addition,int,( sellingPrice + privateDebt ),
